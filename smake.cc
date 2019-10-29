@@ -6,6 +6,7 @@
 #include"dir.cc"
 #include"file.cc"
 #define SLASH "\\"
+#define PROG_NAME "smake"
 
 int main(int argc,char**argv)
 {
@@ -19,8 +20,8 @@ int main(int argc,char**argv)
 
 	bool found_tgt=false;
 
-	if(argc>=2)
-		tgt=argv[1];
+	// Get CLI arguments
+	if(argc>=2) tgt=argv[1];
 
 	// Parse file (using std::regex)
 	while(!feof(f))
@@ -58,6 +59,7 @@ int main(int argc,char**argv)
 				break; // Stop when finished
 				//puts("\t\tcur_tgt == tgt!!");
 		}
+
 		else // Not a target line
 		{
 			// System call if found correct target
@@ -67,18 +69,9 @@ int main(int argc,char**argv)
 				system(line.c_str());
 			}
 		}
-
-		//// Tokenize
-		//printf("LINE:'%s'\n",line.c_str());
-		//char *ptr=strtok(str," \t");
-		//do
-		//{
-			//tok=ptr;
-			//printf("[%s] ",tok.c_str());
-			////cmd+=tok;
-		//} while(ptr=strtok(NULL," \t\n"));
-		//puts("");
 	}
+
+	// Alert if target not found
 	if(!found_tgt)
 		printf("error: could not find target "
 			"'%s'\n",tgt.c_str());
