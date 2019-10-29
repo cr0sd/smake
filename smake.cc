@@ -22,6 +22,7 @@ int main(int argc,char**argv)
 	bool found_tgt=false;
 	bool list_targets=false;
 	std::string targets="";
+	int n_targets=0;
 
 	// Get CLI arguments
 	if(argc>=2)
@@ -35,7 +36,6 @@ int main(int argc,char**argv)
 				exit(0);
 			else if(strcmp(argv[i],"-l")==0)
 				//puts("LIST TARGETS:"),
-				printf("Targets in '%s':",fn.c_str()),
 				list_targets=true;
 			else // Default: use arg as target
 				tgt=argv[i];
@@ -71,12 +71,13 @@ int main(int argc,char**argv)
 
 			cur_tgt=match[1];
 			targets+="\n"+cur_tgt;
+			++n_targets;
 			//printf("\n\nNEW TARGET:'%s'\n",
 				//cur_tgt.c_str());
 			if(tgt==cur_tgt)
 				found_tgt=true;
-			else if(found_tgt)
-				break; // Stop when finished
+			else if(found_tgt && !list_targets)
+				break; // Stop when finished (and not counting n_targets)
 				//puts("\t\tcur_tgt == tgt!!");
 		}
 
@@ -99,7 +100,8 @@ int main(int argc,char**argv)
 
 	// List targets if '-l' used
 	if(list_targets)
-		puts(targets.c_str());
+		printf("Targets in '%s':\n",fn.c_str()),
+		printf("NUMBER TARGETS:%d\n%s",n_targets,targets.c_str());
 
 	// Alert if target not found
 	if(!found_tgt)
