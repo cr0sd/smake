@@ -22,7 +22,13 @@ int main(int argc,char**argv)
 	bool found_tgt=false;
 
 	// Get CLI arguments
-	if(argc>=2) tgt=argv[1];
+	if(argc>=2)
+	{
+		if(strcmp(argv[1],"--help")==0 || strcmp(argv[1],"-h")==0)
+			puts("usage: smake [target] [--help, -h]"),
+			exit(0);
+		tgt=argv[1];
+	}
 
 	// Parse file (using std::regex)
 	while(!feof(f))

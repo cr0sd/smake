@@ -1,7 +1,7 @@
 #if defined(WINDOWS)
 	#include<windows.h>
-	#include<direct.h>
-	#define getcwd _getcwd
+	//#include<direct.h>
+	#define getcwd(x,y) GetCurrentDirectory(y,x)
 #else
 	#include<unistd.h>
 #endif
