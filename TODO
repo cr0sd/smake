@@ -1,0 +1,7 @@
+Things we need to do:
+
+1. Tokenize file by 'parts of speech'
+	a. Targets
+	b. Dependencies
+	c. Commands
+2. Don't die
