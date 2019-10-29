@@ -1,4 +1,4 @@
 all:
 	cc onions.c -o onions
 clean:
-	@rm *.o
+	@rm -f onions *.o

@@ -1,2 +1,4 @@
 all:
-	cc smake.c -o smake -Wfatal-errors
+	c++ smake.cc -o smake -Wfatal-errors
+clean:
+	@rm -f smake *.o
