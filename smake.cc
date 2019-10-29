@@ -20,14 +20,26 @@ int main(int argc,char**argv)
 	std::string tgt="all";				// Active target
 
 	bool found_tgt=false;
+	bool list_targets=false;
+	std::string targets="";
 
 	// Get CLI arguments
 	if(argc>=2)
 	{
-		if(strcmp(argv[1],"--help")==0 || strcmp(argv[1],"-h")==0)
-			puts("usage: smake [target] [--help, -h]"),
-			exit(0);
-		tgt=argv[1];
+		for(int i=1;i<argc;++i)
+		{
+			if(strcmp(argv[i],"--help")==0 || strcmp(argv[i],"-h")==0)
+				puts(	"usage: smake [OPTIONS]\n"
+						"--help, -h\tThis help\n"
+						"-l\t\tList targets (do not execute)"),
+				exit(0);
+			else if(strcmp(argv[i],"-l")==0)
+				//puts("LIST TARGETS:"),
+				printf("Targets in '%s':",fn.c_str()),
+				list_targets=true;
+			else // Default: use arg as target
+				tgt=argv[i];
+		}
 	}
 
 	// Parse file (using std::regex)
@@ -58,6 +70,7 @@ int main(int argc,char**argv)
 			std::regex_search(line,match,reg);
 
 			cur_tgt=match[1];
+			targets+="\n"+cur_tgt;
 			//printf("\n\nNEW TARGET:'%s'\n",
 				//cur_tgt.c_str());
 			if(tgt==cur_tgt)
@@ -70,7 +83,8 @@ int main(int argc,char**argv)
 		else // Not a target line
 		{
 			// System call if found correct target
-			if(found_tgt && cur_tgt==tgt)
+			// Skip if -l is used
+			if(found_tgt && cur_tgt==tgt && !list_targets)
 			{
 				// Remove leading whitespace
 				std::regex r("[\t ]*(.*)");
@@ -82,6 +96,10 @@ int main(int argc,char**argv)
 			}
 		}
 	}
+
+	// List targets if '-l' used
+	if(list_targets)
+		puts(targets.c_str());
 
 	// Alert if target not found
 	if(!found_tgt)
