@@ -4,7 +4,7 @@ clean:
 	rm -f smake *.o
 f:
 	echo do stuff
-feline:
+feline-pumpkins:
 	echo do stuff
 fillip:
 	echo do stuff

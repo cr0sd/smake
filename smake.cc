@@ -64,7 +64,7 @@ int main(int argc,char**argv)
 		// Set target if so
 		std::smatch match;
 		std::regex reg
-			("([a-zA-Z_]+[a-zA-Z0-9_]*):.*");
+			("([a-zA-Z_\\-\\.]+):.*");
 		if(std::regex_match(line,reg))
 		{
 			std::regex_search(line,match,reg);
