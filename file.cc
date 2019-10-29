@@ -8,7 +8,7 @@ std::string filestring(const char*fn)
 	int p=0;
 	if(!f)
 	{
-		printf("failed to open '%s'\n",fn);
+		printf("%s: error: failed to open '%s'\n",PROG_NAME,fn);
 		exit(1);
 		return NULL;
 	}

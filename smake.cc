@@ -3,10 +3,10 @@
 #include<vector>
 #include<string>
 #include<regex>
-#include"dir.cc"
-#include"file.cc"
 #define SLASH "\\"
 #define PROG_NAME "smake"
+#include"dir.cc"
+#include"file.cc"
 
 int main(int argc,char**argv)
 {
@@ -73,6 +73,6 @@ int main(int argc,char**argv)
 
 	// Alert if target not found
 	if(!found_tgt)
-		printf("error: could not find target "
-			"'%s'\n",tgt.c_str());
+		printf("%s: error: could not find target "
+			"'%s'\n",PROG_NAME,tgt.c_str());
 }
