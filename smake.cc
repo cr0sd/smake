@@ -3,6 +3,7 @@
 #include<vector>
 #include<string>
 #include<regex>
+#define WINDOWS
 #include"platform.h"
 #define PROG_NAME "smake"
 #include"dir.cc"
@@ -65,7 +66,12 @@ int main(int argc,char**argv)
 			// System call if found correct target
 			if(found_tgt && cur_tgt==tgt)
 			{
-				printf("system('%s')\n",line.c_str());
+				// Remove leading whitespace
+				std::regex r("[\t ]*(.*)");
+				std::regex_search(line,match,r);
+				std::string t=match[1];
+				//printf("system('%s')\n",t.c_str());
+				puts(t.c_str());
 				system(line.c_str());
 			}
 		}
