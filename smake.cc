@@ -45,31 +45,39 @@ int main(int argc,char**argv)
 		std::smatch match;
 		std::regex reg
 			("([a-zA-Z_]+[a-zA-Z0-9_]*):.*");
-
 		if(std::regex_match(line,reg))
 		{
 			std::regex_search(line,match,reg);
 
 			cur_tgt=match[1];
-			printf("\n\nNEW TARGET:'%s'\n",
-				cur_tgt.c_str());
+			//printf("\n\nNEW TARGET:'%s'\n",
+				//cur_tgt.c_str());
 			if(tgt==cur_tgt)
 				found_tgt=true;
 			else if(found_tgt)
 				break; // Stop when finished
 				//puts("\t\tcur_tgt == tgt!!");
 		}
-
-		// Tokenize
-		printf("LINE:'%s'\n",line.c_str());
-		char *ptr=strtok(str," \t");
-		do
+		else // Not a target line
 		{
-			tok=ptr;
-			printf("[%s] ",tok.c_str());
-			//cmd+=tok;
-		} while(ptr=strtok(NULL," \t\n"));
-		puts("");
+			// System call if found correct target
+			if(found_tgt && cur_tgt==tgt)
+			{
+				printf("system('%s')\n",line.c_str());
+				system(line.c_str());
+			}
+		}
+
+		//// Tokenize
+		//printf("LINE:'%s'\n",line.c_str());
+		//char *ptr=strtok(str," \t");
+		//do
+		//{
+			//tok=ptr;
+			//printf("[%s] ",tok.c_str());
+			////cmd+=tok;
+		//} while(ptr=strtok(NULL," \t\n"));
+		//puts("");
 	}
 	if(!found_tgt)
 		printf("error: could not find target "
