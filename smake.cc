@@ -3,14 +3,14 @@
 #include<vector>
 #include<string>
 #include<regex>
-#define SLASH "\\"
+#include"platform.h"
 #define PROG_NAME "smake"
 #include"dir.cc"
 #include"file.cc"
 
 int main(int argc,char**argv)
 {
-	std::string dir=pwd();
+	std::string dir=cwd();
 	std::string fn=dir+SLASH+"makefile";
 	std::string fs=filestring(fn.c_str());
 	FILE*f=fopen(fn.c_str(),"r");
