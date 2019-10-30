@@ -35,7 +35,6 @@ int main(int argc,char**argv)
 						"-l\t\tList targets (do not execute)"),
 				exit(0);
 			else if(strcmp(argv[i],"-l")==0)
-				//puts("LIST TARGETS:"),
 				list_targets=true;
 			else // Default: use arg as target
 				tgt=argv[i];
@@ -103,8 +102,11 @@ int main(int argc,char**argv)
 
 	// List targets if '-l' used
 	if(list_targets)
-		printf("Targets in '%s':\n",fn.c_str()),
+	{
+		if(targets.front()=='\n')targets.erase(0,1);
+		printf("Targets in '%s':\n",fn.c_str());
 		printf("NUMBER TARGETS:%d\n%s\n",n_targets,targets.c_str());
+	}
 
 	// Alert if target not found
 	if(!found_tgt)
