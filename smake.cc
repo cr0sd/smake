@@ -101,7 +101,7 @@ int main(int argc,char**argv)
 	// List targets if '-l' used
 	if(list_targets)
 		printf("Targets in '%s':\n",fn.c_str()),
-		printf("NUMBER TARGETS:%d\n%s",n_targets,targets.c_str());
+		printf("NUMBER TARGETS:%d\n%s\n",n_targets,targets.c_str());
 
 	// Alert if target not found
 	if(!found_tgt)
