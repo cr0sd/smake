@@ -3,7 +3,7 @@
 #include<vector>
 #include<string>
 #include<regex>
-#define WINDOWS
+//#define WINDOWS
 #include"platform.h"
 #define PROG_NAME "smake"
 #include"dir.cc"
@@ -92,8 +92,11 @@ int main(int argc,char**argv)
 				std::regex_search(line,match,r);
 				std::string t=match[1];
 				//printf("system('%s')\n",t.c_str());
-				puts(t.c_str());
-				system(line.c_str());
+				if(t.front()=='@')
+					t.erase(0,1);
+				else
+					puts(t.c_str());
+				system(t.c_str());
 			}
 		}
 	}

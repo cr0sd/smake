@@ -3,10 +3,10 @@ all:
 clean:
 	rm -f smake *.o
 f:
-	echo do stuff
+	@echo do stuff yes
 feline-pumpkins:
-	echo do stuff
+	@echo do stuff k
 fillip:
-	echo do stuff
+	@echo do stuff okay
 frogs:
-	echo do stuff
+	@echo do stuff mkay
