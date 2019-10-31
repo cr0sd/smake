@@ -28,9 +28,9 @@ std::string cwd()
 
 int main(int argc,char**argv)
 {
-	std::string dir=cwd();					// Absolute CWD path
-	std::string fn=dir+SLASH+"makefile";	// Absolute makefile path
-	FILE*f=fopen(fn.c_str(),"r");			// Makefile
+	std::string dir;//=cwd();					// Absolute CWD path
+	std::string fn;//=dir+SLASH+"makefile";	// Absolute makefile path
+	FILE*f;//=fopen(fn.c_str(),"r");			// Makefile
 
 	std::map<std::string,std::vector<std::string>>
 		dep_map; 							// Dependencies map
@@ -66,6 +66,16 @@ int main(int argc,char**argv)
 		}
 	}
 
+	dir=cwd();					// Absolute CWD path
+	fn=dir+SLASH+"Makefile";	// Absolute makefile path
+	f=fopen(fn.c_str(),"r");	// Makefile
+	if(!f)
+	{
+		fn=dir+SLASH+"makefile";
+		f=fopen(fn.c_str(),"r");
+	}
+
+
 	// Check file is good (we didn't do this before
 	// in case user typed '--help'
 	if(!f)
@@ -98,7 +108,7 @@ int main(int argc,char**argv)
 		// Check if line matches target definition
 		// Set target if so
 		std::smatch match;
-		std::regex reg("([a-zA-Z_\\-\\.]+)[ \t]*:[ \t]*([a-zA-Z_\\-\\.]*)");
+		std::regex reg("([a-zA-Z_\\-\\.]+)[ \t]*:(.*)");
 		// Target format: "(name_of_target): (dependencies)"
 		//                 Group 1           Group 2
 		if(std::regex_match(line,reg))
