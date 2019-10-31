@@ -9,8 +9,6 @@
 //#define WINDOWS
 #define PROG_NAME "smake"
 #include"platform.h"
-#include"dir.cc"
-#include"file.cc"
 
 int main(int argc,char**argv)
 {
@@ -52,11 +50,20 @@ int main(int argc,char**argv)
 		}
 	}
 
+	// Check file is good (we didn't do this before
+	// in case user typed '--help'
+	if(!f)
+	{
+		printf("%s: error: could not open file "
+			"'%s'\n",PROG_NAME,fn.c_str());
+		exit(1);
+	}
+
 
 	// PART 1 -----
 	// Parse file (using std::regex)
 	// Fill in targets, dependencies, and rules
-	while(!feof(f))
+	while(!feof(f) && f)
 	{
 		// Get line
 		char str[512]={0};

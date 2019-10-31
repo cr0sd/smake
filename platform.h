@@ -8,3 +8,13 @@
 	#define SLASH "/"
 	#include<unistd.h> // For getcwd
 #endif
+
+std::string cwd()
+{
+	char b[512];
+
+	getcwd(b,512);
+
+	std::string s=b;
+	return s;
+}
