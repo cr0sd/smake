@@ -1,5 +1,5 @@
 all:f
-	c++ smake.cc -o smake -Wfatal-errors -Os -s
+	c++ smake.cc -o smake -Wfatal-errors -Wall -Wextra -Os
 clean:
 	@rm -f smake *.o
 f:
