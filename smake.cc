@@ -124,6 +124,7 @@ int main(int argc,char**argv)
 			}
 		}
 	}
+	fclose(f);
 
 
 
@@ -136,37 +137,74 @@ int main(int argc,char**argv)
 	//else
 		//puts("");
 
-	// TEST: Display rule_map
+
+	// Create stack of targets in order
+	// of 'leaf nodes' first, up to active target
+	std::stack<std::string>dep_order;
+	if(found_tgt)
 	{
-		for(auto p:rule_map)
+		std::stack<std::string>st;
+		st.push(act_tgt);
+		while(st.size()>0)
 		{
-			// NOTE: All seems well -- now we should construct
-			// a stack/queue with targets+dependencies in correct sequence
-			printf("''%s'':\n",p.first.c_str());
-			for(auto s:p.second)
-				printf("\t''%s''\n",s.c_str());
+			std::string str=st.top();
+			st.pop();
+			dep_order.push(str);
+			for(auto s:dep_map[str])
+				st.push(s);
 		}
-		
+
+		//while(dep_order.size()>0)
+		//{
+			//for(auto s:rule_map[dep_order.top()])
+			//puts(s.c_str());
+			//dep_order.pop();
+		//}
 	}
+
+
+	// TEST: Display rule_map
+
+	//for(auto p:rule_map)
+	//{
+		//// NOTE: All seems well -- now we should construct
+		//// a stack/queue with targets+dependencies in correct sequence
+		//printf("''%s'':\n",p.first.c_str());
+		//for(auto s:p.second)
+			//printf("\t''%s''\n",s.c_str());
+	//}
 
 	// Process rules
 	if(!list_targets)
 	{
-		for(auto s:rule_map[act_tgt])
-		{
-			// Strip leading '@', print rule as appropriate
-			if(s.front()=='@') // @ Silences a rule unless print_only
-			{
-				s.erase(0,1);
-				if(print_only)
-					puts(s.c_str());
-			}
-			else
-				puts(s.c_str());
 
-			// Print and/or execute line
-			//printf(s.c_str());
-			if(!print_only)system(s.c_str());
+		//while(dep_order.size()>0)
+		//{
+			//for(auto s:rule_map[dep_order.top()])
+			//puts(s.c_str());
+			//dep_order.pop();
+		//}
+
+		while(dep_order.size()>0)
+		{
+			//for(auto s:rule_map[act_tgt])
+			for(auto s:rule_map[dep_order.top()])
+			{
+				// Strip leading '@', print rule as appropriate
+				if(s.front()=='@') // @ Silences a rule unless print_only
+				{
+					s.erase(0,1);
+					if(print_only)
+						puts(s.c_str());
+				}
+				else
+					puts(s.c_str());
+	
+				// Print and/or execute line
+				//printf(s.c_str());
+				if(!print_only)system(s.c_str());
+			}
+			dep_order.pop();
 		}
 	}
 

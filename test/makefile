@@ -1,4 +1,4 @@
-all:onions.o
+all:
 	cc onions.c -o onions
 a:a.o
 	cc a.o b.o c.o -o a
