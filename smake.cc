@@ -24,13 +24,13 @@ int main(int argc,char**argv)
 
 	std::string cur_tgt="";					// Current target
 	std::string act_tgt="all";				// Active target
-	std::vector<std::string>cur_rule;		// Current rule
-	std::vector<std::string>act_rule;		// Active rule
 
 	bool found_tgt=false;					// Specified target is found?
 	bool list_targets=false;				// '-l' option
 	bool print_only=false;					// Print only
 
+
+	// PART 0 -----
 	// Parse argv
 	if(argc>=2)
 	{
@@ -51,7 +51,10 @@ int main(int argc,char**argv)
 		}
 	}
 
+
+	// PART 1 -----
 	// Parse file (using std::regex)
+	// Fill in targets, dependencies, and rules
 	while(!feof(f))
 	{
 		// Get line
@@ -67,33 +70,31 @@ int main(int argc,char**argv)
 
 		// Copy line to std::string
 		std::string line=str;
-		//std::string tok="";
-		std::string deps="";
 
 		// Check if line matches target definition
 		// Set target if so
 		std::smatch match;
-		std::regex reg
-			("([a-zA-Z_\\-\\.]+):(.*)");
+		std::regex reg("([a-zA-Z_\\-\\.]+):(.*)");
+		// Target format: "(name_of_target): (dependencies)"
+		//                 Group 1           Group 2
 		if(std::regex_match(line,reg))
 		{
 			std::regex_search(line,match,reg);
 
 			cur_tgt=match[1];
-			deps=match[2];
+			//deps=match[2];
 
 			// Map TARGET => Dependencies
 
-			{
-				// Split deps by space
-				std::string tmp; 
-				std::stringstream ss(deps);
-				std::vector<std::string>v;
+			// Split deps by space
+			std::string tmp; 
+			std::stringstream ss(match[2]);
 
-				while(std::getline(ss,tmp,' '))
-					v.push_back(tmp);
-				dep_map[cur_tgt]=v;
-			}
+			while(std::getline(ss,tmp,' '))
+				dep_map[cur_tgt].push_back(tmp);
+
+			if(match[2].str().empty())
+				dep_map[cur_tgt].clear();
 
 			if(act_tgt==cur_tgt)
 				found_tgt=true;
@@ -101,7 +102,7 @@ int main(int argc,char**argv)
 
 		else // Not a target line
 		{
-			// System call if found correct target
+			// Create dep_map and rule_map
 			// Skip if -l is used
 			if(found_tgt && /*cur_tgt==act_tgt &&*/ !list_targets)
 			{
@@ -112,22 +113,49 @@ int main(int argc,char**argv)
 
 
 				// Push onto correct rule
-				if(act_tgt==cur_tgt)
-					act_rule.push_back(t);
-				else
-					cur_rule.push_back(t);
+				rule_map[cur_tgt].push_back(t);
+
+				//if(act_tgt==cur_tgt)
+					//rule_map[cur_tgt].push_back(t);
+					////act_rule.push_back(t);
+				//else
+					//rule_map[cur_tgt].push_back(t);
+					////cur_rule.push_back(t);
 			}
 		}
+	}
+
+
+
+	// PART 2 -----
+	// Now execute/print rules
+
+	//printf("%s: ",act_tgt.c_str());
+	//if(dep_map[act_tgt].empty()==false)
+		//puts(dep_map[act_tgt][0].c_str());
+	//else
+		//puts("");
+
+	// TEST: Display rule_map
+	{
+		for(auto p:rule_map)
+		{
+			// NOTE: All seems well -- now we should construct
+			// a stack/queue with targets+dependencies in correct sequence
+			printf("''%s'':\n",p.first.c_str());
+			for(auto s:p.second)
+				printf("\t''%s''\n",s.c_str());
+		}
+		
 	}
 
 	// Process rules
 	if(!list_targets)
 	{
-		//puts(act_tgt.c_str());
-		for(auto s:act_rule)
+		for(auto s:rule_map[act_tgt])
 		{
 			// Strip leading '@', print rule as appropriate
-			if(s.front()=='@')
+			if(s.front()=='@') // @ Silences a rule unless print_only
 			{
 				s.erase(0,1);
 				if(print_only)
@@ -145,7 +173,7 @@ int main(int argc,char**argv)
 	// List targets if '-l' used
 	if(list_targets)
 	{
-		printf("%d targets in '%s':\n",(int)(dep_map.size()),fn.c_str());
+		printf("%d targets found in '%s':\n",(int)(dep_map.size()),fn.c_str());
 		for(auto x:dep_map)
 		{
 			printf(x.first.c_str());

@@ -4,6 +4,6 @@ Things we need to do:
 	a. Targets [check]
 	b. Dependencies
 		- Map dependency rules to targets
-		- Create Queue of rules from dependencies in correct order
+		- Create queue/stack of rules from dependencies in correct order
 	c. Commands/Rules [check]
 2. Don't die [so far so good, check]
