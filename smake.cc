@@ -19,10 +19,13 @@ int main(int argc,char**argv)
 
 	std::map<std::string,std::vector<std::string>>
 		dep_map; 							// Dependencies map
+	std::map<std::string,std::vector<std::string>>
+		rule_map;							// Rule map
+
 	std::string cur_tgt="";					// Current target
 	std::string act_tgt="all";				// Active target
-	std::string cur_rule="";				// Current rule
-	std::string act_rule="";				// Active rule
+	std::vector<std::string>cur_rule;		// Current rule
+	std::vector<std::string>act_rule;		// Active rule
 
 	bool found_tgt=false;					// Specified target is found?
 	bool list_targets=false;				// '-l' option
@@ -100,38 +103,43 @@ int main(int argc,char**argv)
 		{
 			// System call if found correct target
 			// Skip if -l is used
-			if(found_tgt && cur_tgt==act_tgt && !list_targets)
+			if(found_tgt && /*cur_tgt==act_tgt &&*/ !list_targets)
 			{
 				// Strip leading whitespace
 				std::regex r("[\t ]*(.*)");
 				std::regex_search(line,match,r);
 				std::string t=match[1];
 
-				// Strip leading '@', print rule as appropriate
-				if(t.front()=='@')
-				{
-					t.erase(0,1);
-					if(print_only)
-						puts(t.c_str());
-				}
+
+				// Push onto correct rule
+				if(act_tgt==cur_tgt)
+					act_rule.push_back(t);
 				else
-					puts(t.c_str());
-				if(!print_only)
-				{
-					if(act_tgt==cur_tgt)
-						act_rule+=t+"\n";
-					else
-						cur_rule+=t+"\n";
-					//system(t.c_str());
-				}
+					cur_rule.push_back(t);
 			}
 		}
 	}
 
-	// Execute act_tgt => act_rule
+	// Process rules
 	if(!list_targets)
 	{
-		system(act_rule.c_str());
+		//puts(act_tgt.c_str());
+		for(auto s:act_rule)
+		{
+			// Strip leading '@', print rule as appropriate
+			if(s.front()=='@')
+			{
+				s.erase(0,1);
+				if(print_only)
+					puts(s.c_str());
+			}
+			else
+				puts(s.c_str());
+
+			// Print and/or execute line
+			//printf(s.c_str());
+			if(!print_only)system(s.c_str());
+		}
 	}
 
 	// List targets if '-l' used
