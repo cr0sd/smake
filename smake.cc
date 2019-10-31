@@ -4,6 +4,7 @@
 #include<string>
 #include<regex>
 #include<stack>
+#include<map>
 
 //#define WINDOWS
 #define PROG_NAME "smake"
@@ -111,16 +112,8 @@ int main(int argc,char**argv)
 				std::regex_search(line,match,r);
 				std::string t=match[1];
 
-
-				// Push onto correct rule
+				// Push command onto TGT=>RULE vector
 				rule_map[cur_tgt].push_back(t);
-
-				//if(act_tgt==cur_tgt)
-					//rule_map[cur_tgt].push_back(t);
-					////act_rule.push_back(t);
-				//else
-					//rule_map[cur_tgt].push_back(t);
-					////cur_rule.push_back(t);
 			}
 		}
 	}
@@ -153,7 +146,6 @@ int main(int argc,char**argv)
 	{
 		while(dep_order.size()>0)
 		{
-			//for(auto s:rule_map[act_tgt])
 			for(auto s:rule_map[dep_order.top()])
 			{
 				// Strip leading '@', print rule as appropriate
@@ -183,8 +175,12 @@ int main(int argc,char**argv)
 			if(!x.second.empty())
 			{
 				printf(": ");
-				for(auto s:x.second)
-					printf("%s, ",s.c_str());
+				for(size_t i=0;i<x.second.size();++i)
+				{
+					printf("%s",x.second[i].c_str());
+					if(i<x.second.size()-1)
+						printf(", ");
+				}
 			}
 			puts("");
 		}

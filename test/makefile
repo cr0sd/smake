@@ -1,5 +1,5 @@
-all:
-	cc onions.c -o onions
+all:a
+	#done
 a:a.o
 	cc a.o b.o c.o -o a
 a.o:b.o c.o
@@ -11,4 +11,4 @@ c.o:
 e.o:
 	#no things
 clean:
-	@rm -f onions *.o
+	@rm -f a *.o
