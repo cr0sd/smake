@@ -131,13 +131,6 @@ int main(int argc,char**argv)
 	// PART 2 -----
 	// Now execute/print rules
 
-	//printf("%s: ",act_tgt.c_str());
-	//if(dep_map[act_tgt].empty()==false)
-		//puts(dep_map[act_tgt][0].c_str());
-	//else
-		//puts("");
-
-
 	// Create stack of targets in order
 	// of 'leaf nodes' first, up to active target
 	std::stack<std::string>dep_order;
@@ -153,38 +146,11 @@ int main(int argc,char**argv)
 			for(auto s:dep_map[str])
 				st.push(s);
 		}
-
-		//while(dep_order.size()>0)
-		//{
-			//for(auto s:rule_map[dep_order.top()])
-			//puts(s.c_str());
-			//dep_order.pop();
-		//}
 	}
-
-
-	// TEST: Display rule_map
-
-	//for(auto p:rule_map)
-	//{
-		//// NOTE: All seems well -- now we should construct
-		//// a stack/queue with targets+dependencies in correct sequence
-		//printf("''%s'':\n",p.first.c_str());
-		//for(auto s:p.second)
-			//printf("\t''%s''\n",s.c_str());
-	//}
 
 	// Process rules
 	if(!list_targets)
 	{
-
-		//while(dep_order.size()>0)
-		//{
-			//for(auto s:rule_map[dep_order.top()])
-			//puts(s.c_str());
-			//dep_order.pop();
-		//}
-
 		while(dep_order.size()>0)
 		{
 			//for(auto s:rule_map[act_tgt])
@@ -201,7 +167,6 @@ int main(int argc,char**argv)
 					puts(s.c_str());
 	
 				// Print and/or execute line
-				//printf(s.c_str());
 				if(!print_only)system(s.c_str());
 			}
 			dep_order.pop();
