@@ -1,7 +1,7 @@
 Things we need to do:
 
-1. Tokenize file by 'parts of speech'
-	a. Targets
+1. Tokenize file by 'parts of speech' (more like by line) [check] 
+	a. Targets [check]
 	b. Dependencies
-	c. Commands
-2. Don't die
+	c. Commands/Rules [check]
+2. Don't die [so far so good, check]

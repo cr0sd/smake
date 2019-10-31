@@ -3,6 +3,8 @@
 #include<vector>
 #include<string>
 #include<regex>
+#include<stack>
+
 //#define WINDOWS
 #define PROG_NAME "smake"
 #include"platform.h"
@@ -11,19 +13,20 @@
 
 int main(int argc,char**argv)
 {
-	std::string dir=cwd();
-	std::string fn=dir+SLASH+"makefile";
-	std::string fs=filestring(fn.c_str());
-	FILE*f=fopen(fn.c_str(),"r");
+	std::string dir=cwd();					// Absolute CWD path
+	std::string fn=dir+SLASH+"makefile";	// Absolute makefile path
+	std::string fs=filestring(fn.c_str());	// Entire makefile contents
+	FILE*f=fopen(fn.c_str(),"r");			// Makefile
 
-	std::string cur_tgt="";			// Current target
-	std::string tgt="all";			// Active target
+	std::string cur_tgt="";					// Current target
+	std::string tgt="all";					// Active target
+	std::string deps[]={""};				// Dependent targets
 
-	bool found_tgt=false;
-	bool list_targets=false;
-	bool print_only=false;
-	std::string targets="";
-	int n_targets=0;
+	bool found_tgt=false;					// Specified target is found?
+	bool list_targets=false;				// '-l' option
+	bool print_only=false;					// Print only
+	std::string targets="";					// Used for list_targets
+	int n_targets=0;						// Used for list_targets
 
 	// Parse argv
 	if(argc>=2)
@@ -90,15 +93,18 @@ int main(int argc,char**argv)
 			// Skip if -l is used
 			if(found_tgt && cur_tgt==tgt && !list_targets)
 			{
-				// Remove leading whitespace
+				// Strip leading whitespace
 				std::regex r("[\t ]*(.*)");
 				std::regex_search(line,match,r);
 				std::string t=match[1];
-				//printf("system('%s')\n",t.c_str());
+
+				// Strip leading '@', print rule as appropriate
 				if(t.front()=='@')
+				{
 					t.erase(0,1);
 					if(print_only)
 						puts(t.c_str());
+				}
 				else
 					puts(t.c_str());
 				if(!print_only)
