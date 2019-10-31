@@ -21,10 +21,11 @@ int main(int argc,char**argv)
 
 	bool found_tgt=false;
 	bool list_targets=false;
+	bool print_only=false;
 	std::string targets="";
 	int n_targets=0;
 
-	// Get CLI arguments
+	// Parse argv
 	if(argc>=2)
 	{
 		for(int i=1;i<argc;++i)
@@ -32,10 +33,13 @@ int main(int argc,char**argv)
 			if(strcmp(argv[i],"--help")==0 || strcmp(argv[i],"-h")==0)
 				puts(	"usage: smake [OPTIONS]\n"
 						"--help, -h\tThis help\n"
-						"-l\t\tList targets (do not execute)"),
+						"-l\t\tList targets (do not execute)\n"
+						"-n\t\tPrint rules (do not execute)"),
 				exit(0);
 			else if(strcmp(argv[i],"-l")==0)
 				list_targets=true;
+			else if(strcmp(argv[i],"-n")==0)
+				print_only=true;
 			else // Default: use arg as target
 				tgt=argv[i];
 		}
@@ -93,9 +97,12 @@ int main(int argc,char**argv)
 				//printf("system('%s')\n",t.c_str());
 				if(t.front()=='@')
 					t.erase(0,1);
+					if(print_only)
+						puts(t.c_str());
 				else
 					puts(t.c_str());
-				system(t.c_str());
+				if(!print_only)
+					system(t.c_str());
 			}
 		}
 	}
