@@ -21,9 +21,7 @@
 std::string cwd()
 {
 	char b[512];
-
 	getcwd(b,512);
-
 	std::string s=b;
 	return s;
 }
@@ -100,7 +98,7 @@ int main(int argc,char**argv)
 		// Check if line matches target definition
 		// Set target if so
 		std::smatch match;
-		std::regex reg("([a-zA-Z_\\-\\.]+):(.*)");
+		std::regex reg("([a-zA-Z_\\-\\.]+)[ \t]*:(.*)");
 		// Target format: "(name_of_target): (dependencies)"
 		//                 Group 1           Group 2
 		if(std::regex_match(line,reg))
