@@ -21,5 +21,3 @@ For now only one build target can be specified at a time.
 
 Variables cannot be used yet.
 
-Only `makefile` is searched for at the moment (i.e., `Makefile` isn't searched for)
-
