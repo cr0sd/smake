@@ -98,7 +98,7 @@ int main(int argc,char**argv)
 		// Check if line matches target definition
 		// Set target if so
 		std::smatch match;
-		std::regex reg("([a-zA-Z_\\-\\.]+)[ \t]*:(.*)");
+		std::regex reg("([a-zA-Z_\\-\\.]+)[ \t]*:[ \t]*([a-zA-Z_\\-\\.]*)");
 		// Target format: "(name_of_target): (dependencies)"
 		//                 Group 1           Group 2
 		if(std::regex_match(line,reg))
