@@ -1,6 +1,10 @@
 #pragma once
+
 #if defined(WINDOWS)
-#define SLASH "\\"
+	#define SLASH "\\"
+	#include<windows.h>
+	#define getcwd(x,y) GetCurrentDirectory(y,x)
 #else
-#define SLASH "/"
+	#define SLASH "/"
+	#include<unistd.h> // For getcwd
 #endif

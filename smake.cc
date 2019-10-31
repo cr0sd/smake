@@ -4,8 +4,8 @@
 #include<string>
 #include<regex>
 //#define WINDOWS
-#include"platform.h"
 #define PROG_NAME "smake"
+#include"platform.h"
 #include"dir.cc"
 #include"file.cc"
 
@@ -17,7 +17,7 @@ int main(int argc,char**argv)
 	FILE*f=fopen(fn.c_str(),"r");
 
 	std::string cur_tgt="";			// Current target
-	std::string tgt="all";				// Active target
+	std::string tgt="all";			// Active target
 
 	bool found_tgt=false;
 	bool list_targets=false;
