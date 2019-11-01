@@ -58,13 +58,16 @@ int main(int argc,char**argv)
 						"-h, --help\tThis help\n"
 						"-l\t\tList targets (do not execute)\n"
 						"-f, --file FILE\tUse FILE as makefile\n"
+						"-c\t\tSet target to 'clean'\n"
 						"-n\t\tPrint rules (do not execute)"),
 				exit(0);
 			else if(strcmp(argv[i],"-l")==0)
 				list_targets=true;
 			else if(strcmp(argv[i],"-n")==0)
 				print_only=true;
-			else if(strcmp(argv[i],"--file")==0 || strcmp(argv[i],"-f")==0)
+			else if(strcmp(argv[i],"-c")==0 || strcmp(argv[i],"--clean")==0)
+				act_tgt="clean";
+			else if(strcmp(argv[i],"-f")==0 || strcmp(argv[i],"--file")==0)
 			{
 				if(++i>=argc)
 				{

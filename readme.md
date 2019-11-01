@@ -15,6 +15,8 @@ the makefile.
 
 * List all targets within makefile
 
+* Use `-c` to set target to `clean`.
+
 ## Notes
 
 For now only one build target can be specified at a time.
