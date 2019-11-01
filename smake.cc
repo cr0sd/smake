@@ -28,9 +28,10 @@ std::string cwd()
 
 int main(int argc,char**argv)
 {
-	std::string dir;//=cwd();					// Absolute CWD path
-	std::string fn;//=dir+SLASH+"makefile";	// Absolute makefile path
-	FILE*f;//=fopen(fn.c_str(),"r");			// Makefile
+	std::string dir=cwd();					// Absolute CWD path
+	std::string fn=dir+SLASH+"Makefile";	// Absolute makefile path
+	std::string mkfn="Makefile";			// Concatenated with fn
+	FILE*f;//=fopen(fn.c_str(),"r");		// Makefile
 
 	std::map<std::string,std::vector<std::string>>
 		dep_map; 							// Dependencies map
@@ -56,25 +57,42 @@ int main(int argc,char**argv)
 						"usage: smake [OPTIONS]\n"
 						"--help, -h\tThis help\n"
 						"-l\t\tList targets (do not execute)\n"
+						"-f FILE\t\tUse FILE as makefile\n"
 						"-n\t\tPrint rules (do not execute)"),
 				exit(0);
 			else if(strcmp(argv[i],"-l")==0)
 				list_targets=true;
 			else if(strcmp(argv[i],"-n")==0)
 				print_only=true;
+			else if(strcmp(argv[i],"--file")==0 || strcmp(argv[i],"-f")==0)
+			{
+				if(++i>=argc)
+				{
+					puts(PROG_NAME ": error: expected FILE");
+					exit(1);
+				}
+				mkfn=argv[i];
+			}
 			else // Default: use arg as target
 				act_tgt=argv[i];
 		}
 	}
 
-	// Create filename and open file
-	dir=cwd();					// Absolute CWD path
-	fn=dir+SLASH+"Makefile";	// Absolute makefile path
-	f=fopen(fn.c_str(),"r");	// Makefile
-	if(!f)
+	// Open custom makefile name if specified
+	if(strcmp(mkfn.c_str(),"Makefile")!=0)
 	{
-		fn=dir+SLASH+"makefile";
+		fn=dir+SLASH+mkfn;
 		f=fopen(fn.c_str(),"r");
+	}
+	else
+	{
+		f=fopen(fn.c_str(),"r");	// Try Makefile
+		if(!f)
+		{
+			// Otherwise try 'makefile'
+			fn=dir+SLASH+"makefile";
+			f=fopen(fn.c_str(),"r");
+		}
 	}
 
 
