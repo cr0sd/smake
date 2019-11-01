@@ -52,7 +52,8 @@ int main(int argc,char**argv)
 		for(int i=1;i<argc;++i)
 		{
 			if(strcmp(argv[i],"--help")==0 || strcmp(argv[i],"-h")==0)
-				puts(	"usage: smake [OPTIONS]\n"
+				puts(	PROG_NAME " " __DATE__ " " __TIME__ "\n"
+						"usage: smake [OPTIONS]\n"
 						"--help, -h\tThis help\n"
 						"-l\t\tList targets (do not execute)\n"
 						"-n\t\tPrint rules (do not execute)"),
