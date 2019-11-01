@@ -9,3 +9,5 @@ clean:
 	@rm -f smake *.o
 install:smake
 	cp smake /usr/local/bin
+uninstall:
+	rm /usr/local/bin/smake
