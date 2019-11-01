@@ -39,7 +39,7 @@ int main(int argc,char**argv)
 		rule_map;							// Rule map
 
 	std::string cur_tgt="";					// Current target
-	std::string act_tgt="all";				// Active target
+	std::string act_tgt="";					// Active target
 
 	bool found_tgt=false;					// Specified target is found?
 	bool list_targets=false;				// '-l' option
@@ -136,6 +136,9 @@ int main(int argc,char**argv)
 			std::regex_search(line,match,reg);
 
 			cur_tgt=match[1];
+
+			// act_tgt assumes first valid target in makefile
+			if(act_tgt=="")act_tgt=cur_tgt;
 			//deps=match[2];
 
 			// Map TARGET => Dependencies
