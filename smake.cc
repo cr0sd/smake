@@ -55,9 +55,9 @@ int main(int argc,char**argv)
 			if(strcmp(argv[i],"--help")==0 || strcmp(argv[i],"-h")==0)
 				puts(	PROG_NAME " " __DATE__ " " __TIME__ "\n"
 						"usage: smake [OPTIONS]\n"
-						"--help, -h\tThis help\n"
+						"-h, --help\tThis help\n"
 						"-l\t\tList targets (do not execute)\n"
-						"-f FILE\t\tUse FILE as makefile\n"
+						"-f, --file FILE\tUse FILE as makefile\n"
 						"-n\t\tPrint rules (do not execute)"),
 				exit(0);
 			else if(strcmp(argv[i],"-l")==0)
