@@ -8,4 +8,4 @@ dependentoid:
 clean:
 	@rm -f smake *.o
 install:smake
-	#now we do the installing! xD
+	cp smake /usr/local/bin
