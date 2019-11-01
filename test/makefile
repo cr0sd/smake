@@ -1,3 +1,4 @@
+CXX=c++
 all:a
 	#done
 a:a.o

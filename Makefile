@@ -1,3 +1,4 @@
+CXX=c++
 all :dependentoid
 	c++ smake.cc -o smake -Wfatal-errors -Wall -Wextra -Os
 smake:all

@@ -37,6 +37,8 @@ int main(int argc,char**argv)
 		dep_map; 							// Dependencies map
 	std::map<std::string,std::vector<std::string>>
 		rule_map;							// Rule map
+	std::map<std::string,std::string>
+		var_map;							// Associative var list (VARNAME => VALUE)
 
 	std::string cur_tgt="";					// Current target
 	std::string act_tgt="";					// Active target
@@ -158,6 +160,22 @@ int main(int argc,char**argv)
 
 			if(act_tgt==cur_tgt)
 				found_tgt=true;
+		}
+
+		
+		else if(std::regex_match(line,reg="([a-zA-Z_]+) *= *(.*)"))
+		{
+			// PARSE ASSIGNMENTS
+			// We want to parse assignments here
+
+			std::regex_search(line,match,reg);
+
+			// Map VARIABLE => VALUE
+			var_map[match[1].str()]=match[2].str();
+
+			printf("$(%s) == $(%s)\n",
+				match[1].str().c_str(),
+				match[2].str().c_str());
 		}
 
 		else // Not a target line
