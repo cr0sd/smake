@@ -66,6 +66,7 @@ int main(int argc,char**argv)
 		}
 	}
 
+	// Create filename and open file
 	dir=cwd();					// Absolute CWD path
 	fn=dir+SLASH+"Makefile";	// Absolute makefile path
 	f=fopen(fn.c_str(),"r");	// Makefile
@@ -138,7 +139,7 @@ int main(int argc,char**argv)
 		{
 			// Create dep_map and rule_map
 			// Skip if -l is used
-			if(found_tgt && /*cur_tgt==act_tgt &&*/ !list_targets)
+			if(!list_targets)
 			{
 				// Strip leading whitespace
 				std::regex r("[\t ]*(.*)");
@@ -179,7 +180,8 @@ int main(int argc,char**argv)
 	{
 		while(dep_order.size()>0)
 		{
-			for(auto s:rule_map[dep_order.top()])
+			for(std::string s:rule_map[(dep_order.top())])
+			//for(std::string s:v)
 			{
 				// Strip leading '@', print rule as appropriate
 				if(s.front()=='@') // @ Silences a rule unless print_only
@@ -190,7 +192,7 @@ int main(int argc,char**argv)
 				}
 				else
 					puts(s.c_str());
-	
+
 				// Print and/or execute line
 				if(!print_only)system(s.c_str());
 			}
