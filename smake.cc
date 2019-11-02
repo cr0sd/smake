@@ -7,7 +7,7 @@
 #include<map>
 
 #define PROG_NAME "smake"
-//#define WINDOWS
+#define WINDOWS
 
 #if defined(WINDOWS)
 	#define SLASH "\\"
@@ -46,7 +46,10 @@ int main(int argc,char**argv)
 	bool found_tgt=false;					// Specified target is found?
 	bool list_targets=false;				// '-l' option
 	bool print_only=false;					// Print only
+	bool list_vars=false;					// '-v': list variables + values
+	bool exec=true;							// Will build applicable targets
 
+	int cur_line=0;							// Line number for errors
 
 	// PART 0 -----
 	// Parse argv
@@ -61,14 +64,20 @@ int main(int argc,char**argv)
 						"-l\t\tList targets (do not execute)\n"
 						"-f, --file FILE\tUse FILE as makefile\n"
 						"-c\t\tSet target to 'clean'\n"
+						"-v\t\tList variables\n"
 						"-n\t\tPrint rules (do not execute)"),
 				exit(0);
 			else if(strcmp(argv[i],"-l")==0)
-				list_targets=true;
+				list_targets=true,
+				exec=false;
 			else if(strcmp(argv[i],"-n")==0)
-				print_only=true;
+				print_only=true,
+				exec=false;
 			else if(strcmp(argv[i],"-c")==0 || strcmp(argv[i],"--clean")==0)
 				act_tgt="clean";
+			else if(strcmp(argv[i],"-v")==0)
+				list_vars=true,
+				exec=false;
 			else if(strcmp(argv[i],"-f")==0 || strcmp(argv[i],"--file")==0)
 			{
 				if(++i>=argc)
@@ -114,26 +123,46 @@ int main(int argc,char**argv)
 	// PART 1 -----
 	// Parse file (using std::regex)
 	// Fill in targets, dependencies, and rules
+	/***************
+	 * 
+	 * Patterns:
+	 *	A. Target: dependencies
+	 *	D. (Default case) Rule/command
+	 *	V. Variable assignment
+	 * 
+	 ***************/
 	while(!feof(f) && f)
 	{
-		// Get line
+		std::smatch match;
+		std::regex reg;
+		std::string line;
 		char str[512]={0};
+
+		// Get line
 		fgets(str,512,f);
-
-		// stop if line is empty
-		if(*str==0) continue;
-
-		// Remove endlines
-		if(str[strlen(str)-1]=='\n')
-			str[strlen(str)-1]=0;
+		++cur_line;
 
 		// Copy line to std::string
-		std::string line=str;
+		line=str;
 
+		// Remove endline (from fgets)
+		//std::replace(line.begin(),line.end(),'\n','');
+
+		line=std::regex_replace(line,reg="[ \t]*\n","");	// Remove space at end
+		line=std::regex_replace(line,reg="^[ \t]","");		// Remove initial space
+		//puts(line.c_str());
+
+		// Check for empty line
+		//if(std::regex_match(line,reg="[ \t\n]*")) 
+			//continue;
+		if(line.empty())continue;
+
+
+
+		/*** Pattern A ***/
 		// Check if line matches target definition
 		// Set target if so
-		std::smatch match;
-		std::regex reg("([a-zA-Z_\\-\\.]+)[ \\t]*:(.*)");
+		reg="([a-zA-Z_\\-\\.]+)[ \\t]*:(.*)";
 		// Target format: "(name_of_target): (dependencies)"
 		//                 Group 1           Group 2
 		if(std::regex_match(line,reg))
@@ -162,24 +191,42 @@ int main(int argc,char**argv)
 				found_tgt=true;
 		}
 
-		
-		else if(std::regex_match(line,reg="([a-zA-Z_]+) *= *(.*)"))
+
+		/*** Pattern V ***/
+		// Line matches VAR = VALUE pattern
+		// Assign internal make variable
+		else if(std::regex_match(line,reg="([a-zA-Z_]*) *= *(.*)"))
 		{
 			// PARSE ASSIGNMENTS
 			// We want to parse assignments here
 
 			std::regex_search(line,match,reg);
 
+			if(match[1].str().empty())
+			{
+				printf(PROG_NAME":%d: error: empty variable name",cur_line);
+				exit(1);
+			}
+
 			// Map VARIABLE => VALUE
 			var_map[match[1].str()]=match[2].str();
 
-			printf("$(%s) == $(%s)\n",
-				match[1].str().c_str(),
-				match[2].str().c_str());
+			//printf("$(%s) == $(%s)\n",
+				//match[1].str().c_str(),
+				//match[2].str().c_str());
 		}
 
-		else // Not a target line
+
+		/*** Pattern D ***/
+		// Default pattern
+		// Rule/command
+		else
 		{
+			if(dep_map.empty())
+			{
+				printf(PROG_NAME":%d: error: recipe before first target",cur_line);
+				exit(1);
+			}
 			// Create dep_map and rule_map
 			// Skip if -l is used
 			if(!list_targets)
@@ -218,8 +265,9 @@ int main(int argc,char**argv)
 		}
 	}
 
-	// Process rules
-	if(!list_targets)
+	// Read/process rules
+	// If we are executing them or printing them
+	if(exec || print_only)
 	{
 		while(dep_order.size()>0)
 		{
@@ -237,9 +285,25 @@ int main(int argc,char**argv)
 					puts(s.c_str());
 
 				// Print and/or execute line
-				if(!print_only)system(s.c_str());
+				if(exec)
+					system(s.c_str());
 			}
 			dep_order.pop();
+		}
+	}
+
+
+	// List variables if '-v' used
+	if(list_vars)
+	{
+		for(auto p:var_map)
+		{
+			if(p.first.empty())
+			{
+				puts("invalid assignment");
+				continue;
+			}
+			printf("$(%s)==$(%s)\n",p.first.c_str(),p.second.c_str());
 		}
 	}
 
