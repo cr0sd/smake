@@ -51,6 +51,7 @@ int main(int argc,char**argv)
 
 	int cur_line=0;							// Line number for errors
 
+
 	// PART 0 -----
 	// Parse argv
 	if(argc>=2)
@@ -192,6 +193,12 @@ int main(int argc,char**argv)
 		}
 
 
+		/*** Pattern C ***/
+		// Comment y'all
+		else if(std::regex_match(line,reg="#.*"))
+			continue;
+
+
 		/*** Pattern V ***/
 		// Line matches VAR = VALUE pattern
 		// Assign internal make variable
@@ -274,6 +281,16 @@ int main(int argc,char**argv)
 			for(std::string s:rule_map[(dep_order.top())])
 			//for(std::string s:v)
 			{
+
+				// Expand variables
+				//std::regex re_v(R"(.*\$\((.*)\))");
+				//while(std::regex_match(s,re_v))
+				//{
+					//std::smatch m;
+					//std::regex_search(s,m,re_v);
+					//s=std::regex_replace(s,re_v,var_map[m[1]]);
+				//}
+
 				// Strip leading '@', print rule as appropriate
 				if(s.front()=='@') // @ Silences a rule unless print_only
 				{
