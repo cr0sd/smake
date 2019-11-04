@@ -1,4 +1,5 @@
 Things we need to do:
 
-1. Recursive variable expansion?
-2. Multiple build targets?
+1. Builtin variables (e.g., CC=cc, RM=rm...)
+2. Recursive variable expansion?
+3. Multiple build targets?
