@@ -36,7 +36,7 @@ replace_vars(std::string s,
 	do
 	{
 		std::regex_search(s,m,std::regex(R"(\$\( *([^\(\)]*) *\))"));
-		for(int i=1;i<m.size();++i)
+		for(int i=1;i<(int)m.size();++i)
 		{
 			std::string replace=var_map[m[i].str()];
 			s=std::regex_replace(s,
@@ -307,14 +307,6 @@ int main(int argc,char**argv)
 
 				// Expand variables
 				s=replace_vars(s,var_map).c_str();
-
-				//std::regex re_v(R"(.*\$\((.*)\))");
-				//while(std::regex_match(s,re_v))
-				//{
-					//std::smatch m;
-					//std::regex_search(s,m,re_v);
-					//s=std::regex_replace(s,re_v,var_map[m[1]]);
-				//}
 
 				// Strip leading '@', print rule as appropriate
 				if(s.front()=='@') // @ Silences a rule unless print_only

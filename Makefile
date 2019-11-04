@@ -1,13 +1,14 @@
 CXX=c++
-CC=
-f=5
+CC=cc
+CXXFLAGS=-Wfatal-errors -Wall -Wextra -Os
+PROG=smake
 
-	#back to my face
+# This is a makefile so for to as testingly :-D
 
 all :dependentoid
 	# This comment
 	echo $(balogna)
-	$(CXX) smake.cc -o smake -Wfatal-errors -Wall -Wextra -Os
+	$(CXX) $(PROG).cc -o $(PROG) $(CXXFLAGS)
 smake:all
 	
 dependentoid: #hi
