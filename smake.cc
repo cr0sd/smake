@@ -8,6 +8,7 @@
 
 #define PROG_NAME "smake"
 //#define WINDOWS
+#define DEFAULT_MAKEFILE "SMakefile"
 
 #if defined(WINDOWS)
 	#define SLASH "\\"
@@ -52,8 +53,8 @@ replace_vars(std::string s,
 int main(int argc,char**argv)
 {
 	std::string dir=cwd();					// Absolute CWD path
-	std::string fn=dir+SLASH+"Makefile";	// Absolute makefile path
-	std::string mkfn="Makefile";			// Concatenated with fn
+	std::string mkfn=DEFAULT_MAKEFILE;		// Concatenated with fn
+	std::string fn=dir+SLASH+mkfn;			// Absolute makefile path
 	FILE*f;//=fopen(fn.c_str(),"r");		// Makefile
 
 	std::map<std::string,std::vector<std::string>>
@@ -117,14 +118,30 @@ int main(int argc,char**argv)
 	}
 
 	// Open custom makefile name if specified
-	if(strcmp(mkfn.c_str(),"Makefile")!=0)
+	//if(strcmp(mkfn.c_str(),DEFAULT_MAKEFILE)!=0)
+
+	// Custom smakefile
+	if(mkfn!=DEFAULT_MAKEFILE)
 	{
 		fn=dir+SLASH+mkfn;
 		f=fopen(fn.c_str(),"r");
 	}
+
+	// Default smakefiles
 	else
 	{
-		f=fopen(fn.c_str(),"r");	// Try Makefile
+		fn=dir+SLASH+DEFAULT_MAKEFILE;
+		f=fopen(fn.c_str(),"r");	// Try default name (SMakefile)
+		if(!f)
+		{
+			fn=dir+SLASH+"Smakefile";
+			f=fopen(fn.c_str(),"r");
+		}
+		if(!f)
+		{
+			fn=dir+SLASH+"smakefile";
+			f=fopen(fn.c_str(),"r");
+		}
 		if(!f)
 		{
 			// Otherwise try 'makefile'
