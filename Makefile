@@ -11,7 +11,7 @@ all :dependentoid
 	echo $(balogna)
 	$(CXX) $(PROG).cc -o $(PROG) $(CXXFLAGS)
 smake:all
-	
+
 dependentoid: #hi
 	@echo 'hi from dependentoid'
 clean:
