@@ -1,6 +1,7 @@
 CXX=c++
 CC=cc
 CXXFLAGS=-Wfatal-errors -Wall -Wextra -Os
+CXXFLAGS += -Wall
 PROG=smake
 
 # This is a makefile so for to as testingly :-D

@@ -247,6 +247,19 @@ int main(int argc,char**argv)
 		}
 
 
+		else if(std::regex_match(line,reg="([a-zA-Z_]*) +\\+=  *(.*)"))
+		{
+			std::regex_search(line,match,reg);
+
+			if(match[1].str().empty())
+			{
+				printf(PROG_NAME":%d: error: empty variable name",cur_line);
+				exit(1);
+			}
+
+			var_map[match[1]]+=" "+match[2].str();
+		}
+
 		/*** Pattern D ***/
 		// Default pattern
 		// Rule/command
@@ -254,7 +267,7 @@ int main(int argc,char**argv)
 		{
 			if(dep_map.empty())
 			{
-				printf(PROG_NAME":%d: error: recipe before first target",cur_line);
+				printf(PROG_NAME":%d: error: recipe before first target\n",cur_line);
 				exit(1);
 			}
 			// Create dep_map and rule_map
