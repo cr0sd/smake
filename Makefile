@@ -15,7 +15,7 @@ smake:all
 dependentoid: #hi
 	@echo 'hi from dependentoid'
 clean:
-	@rm -f smake *.o
+	@$(RM) smake *.o
 install:smake
 	cp smake /usr/local/bin
 uninstall:

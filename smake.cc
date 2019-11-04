@@ -7,7 +7,7 @@
 #include<map>
 
 #define PROG_NAME "smake"
-//#define WINDOWS
+#define WINDOWS
 #define DEFAULT_MAKEFILE "SMakefile"
 
 #if defined(WINDOWS)
@@ -81,7 +81,7 @@ int main(int argc,char**argv)
 	var_map["CC"]="cc";
 	var_map["CXX"]="c++";
 	var_map["LD"]="ld";
-	var_map["RM"]="rm";
+	var_map["RM"]="rm -f"; // GNU Make uses the '-f' flag (so we do too)
 
 
 
