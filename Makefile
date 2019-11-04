@@ -7,7 +7,7 @@ f=5
 all :dependentoid
 	# This comment
 	echo $(balogna)
-	c++ smake.cc -o smake -Wfatal-errors -Wall -Wextra -Os
+	$(CXX) smake.cc -o smake -Wfatal-errors -Wall -Wextra -Os
 smake:all
 	
 dependentoid: #hi

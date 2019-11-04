@@ -7,7 +7,7 @@
 #include<map>
 
 #define PROG_NAME "smake"
-#define WINDOWS
+//#define WINDOWS
 
 #if defined(WINDOWS)
 	#define SLASH "\\"
@@ -23,6 +23,29 @@ std::string cwd()
 	char b[512];
 	getcwd(b,512);
 	std::string s=b;
+	return s;
+}
+
+std::string
+replace_vars(std::string s,
+	std::map<std::string,std::string>var_map)
+{
+	//printf("ORIGINAL:\t'%s'\n",s.c_str());
+	// Replace matches in s from var_map
+	std::smatch m;
+	do
+	{
+		std::regex_search(s,m,std::regex(R"(\$\( *([^\(\)]*) *\))"));
+		for(int i=1;i<m.size();++i)
+		{
+			std::string replace=var_map[m[i].str()];
+			s=std::regex_replace(s,
+				std::regex("\\$\\("+m[i].str()+"\\)"),
+				replace);
+		}
+	} while(m.size()>0);
+
+	//printf("NEW:\t\t'%s'\n",s.c_str());
 	return s;
 }
 
@@ -65,7 +88,7 @@ int main(int argc,char**argv)
 						"-l\t\tList targets (do not execute)\n"
 						"-f, --file FILE\tUse FILE as makefile\n"
 						"-c\t\tSet target to 'clean'\n"
-						"-v\t\tList variables\n"
+						"-v\t\tList variables (do not execute)\n"
 						"-n\t\tPrint rules (do not execute)"),
 				exit(0);
 			else if(strcmp(argv[i],"-l")==0)
@@ -283,6 +306,8 @@ int main(int argc,char**argv)
 			{
 
 				// Expand variables
+				s=replace_vars(s,var_map).c_str();
+
 				//std::regex re_v(R"(.*\$\((.*)\))");
 				//while(std::regex_match(s,re_v))
 				//{
