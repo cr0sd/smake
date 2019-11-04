@@ -7,7 +7,7 @@
 #include<map>
 
 #define PROG_NAME "smake"
-#define WINDOWS
+//#define WINDOWS
 #define DEFAULT_MAKEFILE "SMakefile"
 
 #if defined(WINDOWS)
@@ -165,8 +165,8 @@ int main(int argc,char**argv)
 	// in case user typed '--help'
 	if(!f)
 	{
-		printf("%s: error: could not open file "
-			"'%s'\n",PROG_NAME,fn.c_str());
+		printf(PROG_NAME ": error: could not open file "
+			"'%s'\n",fn.c_str());
 		exit(1);
 	}
 
@@ -262,7 +262,7 @@ int main(int argc,char**argv)
 
 			if(match[1].str().empty())
 			{
-				printf(PROG_NAME":%d: error: empty variable name",cur_line);
+				printf(PROG_NAME": %d: error: empty variable name",cur_line);
 				exit(1);
 			}
 
@@ -284,7 +284,7 @@ int main(int argc,char**argv)
 
 			if(match[1].str().empty())
 			{
-				printf(PROG_NAME":%d: error: empty variable name",cur_line);
+				printf(PROG_NAME": %d: error: empty variable name",cur_line);
 				exit(1);
 			}
 
@@ -298,7 +298,7 @@ int main(int argc,char**argv)
 		{
 			if(dep_map.empty())
 			{
-				printf(PROG_NAME":%d: error: recipe before first target\n",cur_line);
+				printf(PROG_NAME": %d: error: recipe before first target\n",cur_line);
 				exit(1);
 			}
 			// Create dep_map and rule_map
@@ -381,7 +381,7 @@ int main(int argc,char**argv)
 				puts("invalid assignment");
 				continue;
 			}
-			printf("$(%s)==$(%s)\n",p.first.c_str(),p.second.c_str());
+			printf("$(%s)=='%s'\n",p.first.c_str(),p.second.c_str());
 		}
 	}
 
@@ -408,6 +408,6 @@ int main(int argc,char**argv)
 
 	// Alert if target not found
 	if(!found_tgt)
-		printf("%s: error: could not find target "
-			"'%s'\n",PROG_NAME,act_tgt.c_str());
+		printf(PROG_NAME": error: could not find target "
+			"'%s'\n",act_tgt.c_str());
 }
