@@ -1,5 +1,5 @@
-CXX=c++
-CC=cc
+CXX=g++
+CC=gcc
 CXXFLAGS=-Wfatal-errors -Wall -Wextra -Os
 CXXFLAGS += -Wall
 PROG=smake

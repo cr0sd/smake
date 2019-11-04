@@ -1,6 +1,7 @@
-CXX = c++
-CC = cc
-RM = rm
+# Use builtin macros
+#CXX = c++
+#CC = cc
+#RM = rm
 
 all:a
 	#done

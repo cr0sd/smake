@@ -76,6 +76,16 @@ int main(int argc,char**argv)
 	int cur_line=0;							// Line number for errors
 
 
+
+	// Builtin macros!!!
+	var_map["CC"]="cc";
+	var_map["CXX"]="c++";
+	var_map["LD"]="ld";
+	var_map["RM"]="rm";
+
+
+
+
 	// PART 0 -----
 	// Parse argv
 	if(argc>=2)
