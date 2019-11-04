@@ -1,15 +1,18 @@
-CXX=c++
+CXX = c++
+CC = cc
+RM = rm
+
 all:a
 	#done
 a:a.o
-	cc a.o b.o c.o -o a
+	$(CC) a.o b.o c.o -o a
 a.o:b.o c.o
-	cc -c a.c
+	$(CC) -c a.c
 b.o:e.o
-	cc -c b.c
+	$(CC) -c b.c
 c.o:
-	cc -c c.c
+	$(CC) -c c.c
 e.o:
 	#no things
 clean:
-	@rm -f a *.o
+	@$(RM) -f a *.o
