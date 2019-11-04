@@ -3,7 +3,7 @@
 Make utility that can list the targets contained in 
 the makefile.
 
-## Features include
+### Features include
 
 * Single target
 
@@ -13,15 +13,13 @@ the makefile.
 
 * Dry-run (show rules but don't execute them)
 
-* List all targets within makefile
-
 * Use `-c` to set target to `clean`
 
 * Use `-v` to view defined variables
 
-## Notes
+* Use `-l` to list all targets in makefile
+
+### Notes
 
 For now only one build target can be specified at a time.
-
-Variables cannot be used yet.
 
