@@ -6,6 +6,7 @@
 #include<stack>
 #include<map>
 
+#define VERSION "0.5"
 #define PROG_NAME "smake"
 //#define WINDOWS
 #define DEFAULT_MAKEFILE "SMakefile"
@@ -19,8 +20,9 @@
 	#include<unistd.h> // For getcwd
 #endif
 
-const char* HELPSTRING=	PROG_NAME " " __DATE__ " " __TIME__ "\n"
-						"usage: smake [OPTIONS]\n"
+const char* HELPSTRING=	PROG_NAME " " VERSION " \n"
+						"Build " __DATE__ " " __TIME__ "\n"
+						"usage: smake [options] [target]\n"
 						"-h, --help\tThis help\n"
 						"-f, --file FILE\tUse FILE as makefile\n"
 						"-c\t\tSet target to 'clean'\n"
@@ -164,6 +166,8 @@ int main(int argc,char**argv)
 		macro_map["CC"]="cc";
 		macro_map["CXX"]="c++";
 		macro_map["LD"]="ld";
+		macro_map["AS"]="as";
+		macro_map["CPP"]="cc -E";
 		macro_map["RM"]="rm -f"; // GNU Make uses the '-f' flag (so we do too)
 	}
 
