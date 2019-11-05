@@ -384,7 +384,7 @@ int main(int argc,char**argv)
 	if(print_database)
 	{
 		if(exec)puts("");
-		printf("# macros found in '%s':\n",fn.c_str());
+		printf("# macros found in '%s' (or builtin):\n",fn.c_str());
 		for(auto p:macro_map)
 		{
 			if(p.first.empty())
