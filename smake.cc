@@ -7,7 +7,7 @@
 #include<map>
 
 #define PROG_NAME "smake"
-#define WINDOWS
+//#define WINDOWS
 #define DEFAULT_MAKEFILE "SMakefile"
 
 #if defined(WINDOWS)
