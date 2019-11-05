@@ -19,6 +19,16 @@
 	#include<unistd.h> // For getcwd
 #endif
 
+const char* HELPSTRING=	PROG_NAME " " __DATE__ " " __TIME__ "\n"
+						"usage: smake [OPTIONS]\n"
+						"-h, --help\tThis help\n"
+						"-f, --file FILE\tUse FILE as makefile\n"
+						"-c\t\tSet target to 'clean'\n"
+						"-p\t\tPrint internal data\n"
+						"-P\t\tAlias to '-np'\n"
+						"-R\t\tDisable built-in macros\n"
+						"-n\t\tPrint rules (do not execute)";
+
 std::string cwd()
 {
 	char b[512];
@@ -85,37 +95,54 @@ int main(int argc,char**argv)
 	{
 		for(int i=1;i<argc;++i)
 		{
-			if(strcmp(argv[i],"--help")==0 || strcmp(argv[i],"-h")==0)
-				puts(	PROG_NAME " " __DATE__ " " __TIME__ "\n"
-						"usage: smake [OPTIONS]\n"
-						"-h, --help\tThis help\n"
-						"-f, --file FILE\tUse FILE as makefile\n"
-						"-c\t\tSet target to 'clean'\n"
-						"-p\t\tPrint internal data\n"
-						"-R\t\tDisable built-in macros\n"
-						"-n\t\tPrint rules (do not execute)"),
+			if(strcmp(argv[i],"--help")==0)
+				puts(HELPSTRING),
 				exit(0);
-			else if(strcmp(argv[i],"-n")==0 || strcmp(argv[i],"--print-only")==0)
-				print_only=true,
-				exec=false;
-			else if(strcmp(argv[i],"-c")==0)
-				act_tgt="clean";
-			else if(strcmp(argv[i],"-p")==0)
-				print_database=true,
-				list_targets=true;
-			else if(strcmp(argv[i],"-R")==0)
-				no_builtin=true;
-			else if(strcmp(argv[i],"-f")==0 || strcmp(argv[i],"--file")==0)
+			else if(strlen(argv[i])>1 && argv[i][0]=='-')
 			{
-				if(++i>=argc)
+				// Process short flags (i.e., -X)
+				if(argv[i][1]!='-')
 				{
-					puts(PROG_NAME ": error: expected FILE");
-					exit(1);
+					for(int j=1;j<(int)strlen(argv[i]);++j)
+					{
+						if(argv[i][j]=='h')
+							puts(HELPSTRING),
+							exit(0);
+						if(argv[i][j]=='n')
+							print_only=true,
+							exec=false;
+						else if(argv[i][j]=='c')
+							act_tgt="clean";
+						else if(argv[i][j]=='p')
+							print_database=true,
+							list_targets=true;
+						else if(argv[i][j]=='P')
+							print_database=true,
+							list_targets=true,
+							print_only=true,
+							exec=false;
+						else if(argv[i][j]=='R')
+							no_builtin=true;
+	
+						// For now this skips the rest of the short flags !!!
+						else if(argv[i][j]=='f')
+						{
+							if(++i>=argc)
+							{
+								puts(PROG_NAME ": error: expected FILE");
+								exit(1);
+							}
+							mkfn=argv[i];
+							break;
+						}
+					}
+
 				}
-				mkfn=argv[i];
+				continue;
 			}
-			else // Default: use arg as target
-				act_tgt=argv[i];
+
+			// No control flow here: Use continue before here to skip
+			act_tgt=argv[i];
 		}
 	}
 
@@ -145,8 +172,9 @@ int main(int argc,char**argv)
 	// Default smakefiles
 	else
 	{
+		// Try default name (SMakefile)
 		fn=dir+SLASH+DEFAULT_MAKEFILE;
-		f=fopen(fn.c_str(),"r");	// Try default name (SMakefile)
+		f=fopen(fn.c_str(),"r");	
 		if(!f)
 		{
 			fn=dir+SLASH+"Smakefile";
@@ -157,9 +185,14 @@ int main(int argc,char**argv)
 			fn=dir+SLASH+"smakefile";
 			f=fopen(fn.c_str(),"r");
 		}
+		// Otherwise try 'makefile'
 		if(!f)
 		{
-			// Otherwise try 'makefile'
+			fn=dir+SLASH+"Makefile";
+			f=fopen(fn.c_str(),"r");
+		}
+		if(!f)
+		{
 			fn=dir+SLASH+"makefile";
 			f=fopen(fn.c_str(),"r");
 		}
