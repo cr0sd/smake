@@ -431,7 +431,7 @@ int main(int argc,char**argv)
 					puts(s.c_str());
 
 				// Print and/or execute line
-				if(exec)
+				if(exec && s[0]!='#')
 					system(s.c_str());
 			}
 			dep_order.pop();
