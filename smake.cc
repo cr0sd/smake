@@ -320,7 +320,7 @@ int main(int argc,char**argv)
 		/*** Pattern V+ ***/
 		// Line matches VAR += VALUE
 		// Concatenate VALUE to end of VAR
-		else if(std::regex_match(line,reg="([a-zA-Z_]*) +\\+=  *(.*)"))
+		else if(std::regex_match(line,reg="([a-zA-Z_]*) +\\+= *(.*)"))
 		{
 			std::regex_search(line,match,reg);
 
