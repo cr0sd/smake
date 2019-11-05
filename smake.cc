@@ -78,11 +78,12 @@ int main(int argc,char**argv)
 	std::string act_tgt="";					// Active target
 
 	bool found_tgt=false;					// Specified target is found?
-	bool list_targets=false;				// '-l' option
-	bool print_only=false;					// Print only
-	bool print_database=false;				// '-p': print internal data
+	bool list_targets=false;				// Print fetched target info
+	bool print_only=false;					// Print rules only
+	bool print_database=false;				// '-p': print all internal data
 	bool exec=true;							// Will build applicable targets
 	bool no_builtin=false;					// Disable built-in macros
+	bool custom_makefile=false;				// User specified filename
 
 	int cur_line=0;							// Line number for errors
 
@@ -103,6 +104,7 @@ int main(int argc,char**argv)
 				// Process short flags (i.e., -X)
 				if(argv[i][1]!='-')
 				{
+
 					for(int j=1;j<(int)strlen(argv[i]);++j)
 					{
 						if(argv[i][j]=='h')
@@ -123,20 +125,20 @@ int main(int argc,char**argv)
 							exec=false;
 						else if(argv[i][j]=='R')
 							no_builtin=true;
-	
-						// For now this skips the rest of the short flags !!!
 						else if(argv[i][j]=='f')
-						{
-							if(++i>=argc)
-							{
-								puts(PROG_NAME ": error: expected FILE");
-								exit(1);
-							}
-							mkfn=argv[i];
-							break;
-						}
+							custom_makefile=true;
 					}
 
+					if(custom_makefile)
+					{
+						puts("file from files");
+						if(++i>=argc)
+						{
+							puts(PROG_NAME ": error: expected FILE");
+							exit(1);
+						}
+						mkfn=argv[i];
+					}
 				}
 				continue;
 			}
