@@ -3,7 +3,7 @@
 Make utility that can list the targets contained in 
 the makefile.
 
-usage: smake [options] [target]
+`usage: smake [options] [target]
 
 -h, --help	This help
 
@@ -19,7 +19,7 @@ usage: smake [options] [target]
 
 -R		Disable built-in macros
 
--n		Print rules (do not execute)
+-n		Print rules (do not execute)`
 
 ### Features include
 
