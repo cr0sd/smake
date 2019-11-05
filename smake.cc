@@ -6,7 +6,7 @@
 #include<stack>
 #include<map>
 
-#define VERSION "0.5"
+#define VERSION "0.5.0"
 #define PROG_NAME "smake"
 //#define WINDOWS
 #define DEFAULT_MAKEFILE "SMakefile"
