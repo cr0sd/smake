@@ -167,7 +167,10 @@ int main(int argc,char**argv)
 		macro_map["CXX"]="c++";
 		macro_map["LD"]="ld";
 		macro_map["AS"]="as";
+		macro_map["AR"]="ar";
+		macro_map["ARFLAGS"]="rv";
 		macro_map["CPP"]="cc -E";
+		macro_map["PWD"]=dir;
 		macro_map["RM"]="rm -f"; // GNU Make uses the '-f' flag (so we do too)
 	}
 
