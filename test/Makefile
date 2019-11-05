@@ -5,6 +5,7 @@
 
 all:a
 	#done
+	@echo Compiling for $(OS)...
 a:a.o
 	$(CC) a.o b.o c.o -o a
 a.o:b.o c.o

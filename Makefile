@@ -8,7 +8,7 @@ PREFIX=/usr/local/bin/
 # This is a makefile so for to as testingly :-D
 
 all :
-	#hey there
+	# We will now build the thing...
 	$(CXX) $(PROG).cc -o $(PROG) $(CXXFLAGS)
 clean:
 	@$(RM) smake *.o

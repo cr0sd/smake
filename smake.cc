@@ -8,17 +8,24 @@
 
 #define VERSION "0.5.1"
 #define PROG_NAME "smake"
-//#define WINDOWS
 #define DEFAULT_MAKEFILE "SMakefile"
 
+
+//#define WINDOWS
+#define GNULINUX
 #if defined(WINDOWS)
 	#define SLASH "\\"
 	#include<windows.h>
 	#define getcwd(x,y) GetCurrentDirectory(y,x)
-#else
+	#define OS_MACRO "Windows_NT"
+#elif defined(GNULINUX)
 	#define SLASH "/"
 	#include<unistd.h> // For getcwd
+	#define OS_MACRO "GNU/Linux"
+#else
+	#error What OS are you even on even?
 #endif
+
 
 #define VERSTRING		PROG_NAME " " VERSION " \n" \
 						"Build " __DATE__ " " __TIME__
@@ -180,6 +187,7 @@ int main(int argc,char**argv)
 		macro_map["CPP"]="cc -E";
 		macro_map["PWD"]=dir;
 		macro_map["RM"]="rm -f"; // GNU Make uses the '-f' flag (so we do too)
+		macro_map["OS"]=OS_MACRO;
 	}
 
 
