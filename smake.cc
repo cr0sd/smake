@@ -387,7 +387,7 @@ int main(int argc,char**argv)
 				puts("invalid assignment");
 				continue;
 			}
-			printf("$(%s)=='%s'\n",p.first.c_str(),p.second.c_str());
+			printf("# %s=%s\n",p.first.c_str(),p.second.c_str());
 		}
 		puts("");
 	}
@@ -398,7 +398,7 @@ int main(int argc,char**argv)
 		printf("# %d targets found in '%s':\n",(int)(dep_map.size()),fn.c_str());
 		for(auto x:dep_map)
 		{
-			printf(x.first.c_str());
+			printf("# %s",x.first.c_str());
 			if(!x.second.empty())
 			{
 				printf(": ");
