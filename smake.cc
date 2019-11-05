@@ -7,7 +7,7 @@
 #include<map>
 
 #define PROG_NAME "smake"
-//#define WINDOWS
+#define WINDOWS
 #define DEFAULT_MAKEFILE "SMakefile"
 
 #if defined(WINDOWS)
@@ -306,9 +306,10 @@ int main(int argc,char**argv)
 				printf(PROG_NAME": %d: error: recipe before first target\n",cur_line);
 				exit(1);
 			}
+
 			// Create dep_map and rule_map
 			// Skip if -l is used
-			if(exec)
+			//if(exec)
 			{
 				// Strip leading whitespace
 				std::regex r("[\t ]*(.*)");
