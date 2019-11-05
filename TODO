@@ -3,3 +3,4 @@ Things we need to do:
 1. Multiple build targets?
 2. Add GNU Make compliant special symbols?
 3. Add GNU Make ifeq/endif things?
+4. Line concatenation with `\`?
