@@ -4,7 +4,7 @@
 #RM = rm
 
 all:a
-	#done
+	# This one is done after all dependencies
 	@echo Compiling for $(OS)...
 a:a.o
 	$(CC) a.o b.o c.o -o a
@@ -15,6 +15,6 @@ b.o:e.o
 c.o:
 	$(CC) -c c.c
 e.o:
-	#no things
+	# This one has no dependencies
 clean:
 	@$(RM) -f a *.o

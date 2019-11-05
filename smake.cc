@@ -31,14 +31,14 @@
 						"Build " __DATE__ " " __TIME__
 
 #define HELPSTRING		"usage: smake [options] [target]\n" \
-						"-h, --help\tThis help\n" \
-						"-v, --version\tShow version info\n" \
-						"-f, --file FILE\tUse FILE as makefile\n" \
-						"-c\t\tSet target to 'clean'\n" \
-						"-p\t\tPrint internal data\n" \
-						"-P\t\tAlias to '-np'\n" \
-						"-R\t\tDisable built-in macros\n" \
-						"-n\t\tPrint rules (do not execute)"
+						"-h, --help\t\t\tThis help\n" \
+						"-v, --version\t\t\tShow version info\n" \
+						"-f, --file FILE\t\t\tUse FILE as makefile\n" \
+						"-c\t\t\t\tSet target to 'clean'\n" \
+						"-p\t\t\t\tPrint internal data\n" \
+						"-P\t\t\t\tAlias to '-np'\n" \
+						"-R, --no-builtin-variables\tDisable built-in macros\n" \
+						"-n, --just-print\t\tPrint rules (do not execute)"
 
 std::string cwd()
 {
@@ -115,6 +115,17 @@ int main(int argc,char**argv)
 			else if(strcmp(argv[i],"--version")==0)
 				puts(VERSTRING),
 				exit(0);
+			else if(strcmp(argv[i],"--no-builtin-variables")==0)
+			{
+				no_builtin=true;
+				continue;
+			}
+			else if(strcmp(argv[i],"--just-print")==0)
+			{
+				print_only=true;
+				exec=false;
+				continue;
+			}
 			else if(strlen(argv[i])>1 && argv[i][0]=='-')
 			{
 				// Process short flags (i.e., -X)
