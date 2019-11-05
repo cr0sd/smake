@@ -7,7 +7,7 @@
 #include<map>
 
 #define PROG_NAME "smake"
-//#define WINDOWS
+#define WINDOWS
 #define DEFAULT_MAKEFILE "SMakefile"
 
 #if defined(WINDOWS)
@@ -28,18 +28,18 @@ std::string cwd()
 }
 
 std::string
-replace_vars(std::string s,
-	std::map<std::string,std::string>var_map)
+replace_macros(std::string s,
+	std::map<std::string,std::string>macro_map)
 {
 	//printf("ORIGINAL:\t'%s'\n",s.c_str());
-	// Replace matches in s from var_map
+	// Replace matches in s from macro_map
 	std::smatch m;
 	do
 	{
 		std::regex_search(s,m,std::regex(R"(\$\( *([^\(\)]*) *\))"));
 		for(int i=1;i<(int)m.size();++i)
 		{
-			std::string replace=var_map[m[i].str()];
+			std::string replace=macro_map[m[i].str()];
 			s=std::regex_replace(s,
 				std::regex("\\$\\("+m[i].str()+"\\)"),
 				replace);
@@ -62,7 +62,7 @@ int main(int argc,char**argv)
 	std::map<std::string,std::vector<std::string>>
 		rule_map;							// Rule map
 	std::map<std::string,std::string>
-		var_map;							// Associative var list (VARNAME => VALUE)
+		macro_map;							// Associative macro list (MACNAME => VALUE)
 
 	std::string cur_tgt="";					// Current target
 	std::string act_tgt="";					// Active target
@@ -70,18 +70,11 @@ int main(int argc,char**argv)
 	bool found_tgt=false;					// Specified target is found?
 	bool list_targets=false;				// '-l' option
 	bool print_only=false;					// Print only
-	bool list_vars=false;					// '-v': list variables + values
+	bool print_database=false;				// '-p': print internal data
 	bool exec=true;							// Will build applicable targets
+	bool no_builtin=false;					// Disable built-in macros
 
 	int cur_line=0;							// Line number for errors
-
-
-
-	// Builtin macros!!!
-	var_map["CC"]="cc";
-	var_map["CXX"]="c++";
-	var_map["LD"]="ld";
-	var_map["RM"]="rm -f"; // GNU Make uses the '-f' flag (so we do too)
 
 
 
@@ -96,23 +89,23 @@ int main(int argc,char**argv)
 				puts(	PROG_NAME " " __DATE__ " " __TIME__ "\n"
 						"usage: smake [OPTIONS]\n"
 						"-h, --help\tThis help\n"
-						"-l\t\tList targets (do not execute)\n"
 						"-f, --file FILE\tUse FILE as makefile\n"
 						"-c\t\tSet target to 'clean'\n"
-						"-v\t\tList variables (do not execute)\n"
+						"-p\t\tPrint internal data (do not execute)\n"
+						"-R\t\tDisable built-in macros\n"
 						"-n\t\tPrint rules (do not execute)"),
 				exit(0);
-			else if(strcmp(argv[i],"-l")==0)
-				list_targets=true,
-				exec=false;
-			else if(strcmp(argv[i],"-n")==0)
+			else if(strcmp(argv[i],"-n")==0 || strcmp(argv[i],"--print-only")==0)
 				print_only=true,
 				exec=false;
-			else if(strcmp(argv[i],"-c")==0 || strcmp(argv[i],"--clean")==0)
+			else if(strcmp(argv[i],"-c")==0)
 				act_tgt="clean";
-			else if(strcmp(argv[i],"-v")==0)
-				list_vars=true,
+			else if(strcmp(argv[i],"-p")==0)
+				print_database=true,
+				list_targets=true,
 				exec=false;
+			else if(strcmp(argv[i],"-R")==0)
+				no_builtin=true;
 			else if(strcmp(argv[i],"-f")==0 || strcmp(argv[i],"--file")==0)
 			{
 				if(++i>=argc)
@@ -126,6 +119,19 @@ int main(int argc,char**argv)
 				act_tgt=argv[i];
 		}
 	}
+
+
+
+
+	// Builtin macros!!!
+	if(!no_builtin)
+	{
+		macro_map["CC"]="cc";
+		macro_map["CXX"]="c++";
+		macro_map["LD"]="ld";
+		macro_map["RM"]="rm -f"; // GNU Make uses the '-f' flag (so we do too)
+	}
+
 
 	// Open custom makefile name if specified
 	//if(strcmp(mkfn.c_str(),DEFAULT_MAKEFILE)!=0)
@@ -252,7 +258,7 @@ int main(int argc,char**argv)
 
 		/*** Pattern V ***/
 		// Line matches VAR = VALUE pattern
-		// Assign internal make variable
+		// Assign internal make macros
 		else if(std::regex_match(line,reg="([a-zA-Z_]*) *= *(.*)"))
 		{
 			// PARSE ASSIGNMENTS
@@ -262,12 +268,12 @@ int main(int argc,char**argv)
 
 			if(match[1].str().empty())
 			{
-				printf(PROG_NAME": %d: error: empty variable name",cur_line);
+				printf(PROG_NAME": %d: error: empty macro name",cur_line);
 				exit(1);
 			}
 
 			// Map VARIABLE => VALUE
-			var_map[match[1].str()]=match[2].str();
+			macro_map[match[1].str()]=match[2].str();
 
 			//printf("$(%s) == $(%s)\n",
 				//match[1].str().c_str(),
@@ -284,11 +290,11 @@ int main(int argc,char**argv)
 
 			if(match[1].str().empty())
 			{
-				printf(PROG_NAME": %d: error: empty variable name",cur_line);
+				printf(PROG_NAME": %d: error: empty macro name",cur_line);
 				exit(1);
 			}
 
-			var_map[match[1]]+=" "+match[2].str();
+			macro_map[match[1]]+=" "+match[2].str();
 		}
 
 		/*** Pattern D ***/
@@ -349,8 +355,8 @@ int main(int argc,char**argv)
 			//for(std::string s:v)
 			{
 
-				// Expand variables
-				s=replace_vars(s,var_map).c_str();
+				// Expand macros
+				s=replace_macros(s,macro_map).c_str();
 
 				// Strip leading '@', print rule as appropriate
 				if(s.front()=='@') // @ Silences a rule unless print_only
@@ -371,10 +377,11 @@ int main(int argc,char**argv)
 	}
 
 
-	// List variables if '-v' used
-	if(list_vars)
+	// Print internal database if '-p' used
+	if(print_database)
 	{
-		for(auto p:var_map)
+		printf("# macros found in '%s':\n",fn.c_str());
+		for(auto p:macro_map)
 		{
 			if(p.first.empty())
 			{
@@ -383,12 +390,13 @@ int main(int argc,char**argv)
 			}
 			printf("$(%s)=='%s'\n",p.first.c_str(),p.second.c_str());
 		}
+		puts("");
 	}
 
-	// List targets if '-l' used
+	// List targets if '-p' used
 	if(list_targets)
 	{
-		printf("%d targets found in '%s':\n",(int)(dep_map.size()),fn.c_str());
+		printf("# %d targets found in '%s':\n",(int)(dep_map.size()),fn.c_str());
 		for(auto x:dep_map)
 		{
 			printf(x.first.c_str());

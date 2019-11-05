@@ -15,9 +15,7 @@ the makefile.
 
 * Use `-c` to set target to `clean`
 
-* Use `-v` to view defined variables
-
-* Use `-l` to list all targets in makefile
+* Use `-p` to print rules and macros defined in makefile (or built-in)
 
 ### Notes
 
