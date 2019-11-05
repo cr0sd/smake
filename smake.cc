@@ -91,7 +91,7 @@ int main(int argc,char**argv)
 						"-h, --help\tThis help\n"
 						"-f, --file FILE\tUse FILE as makefile\n"
 						"-c\t\tSet target to 'clean'\n"
-						"-p\t\tPrint internal data (do not execute)\n"
+						"-p\t\tPrint internal data\n"
 						"-R\t\tDisable built-in macros\n"
 						"-n\t\tPrint rules (do not execute)"),
 				exit(0);
@@ -102,8 +102,7 @@ int main(int argc,char**argv)
 				act_tgt="clean";
 			else if(strcmp(argv[i],"-p")==0)
 				print_database=true,
-				list_targets=true,
-				exec=false;
+				list_targets=true;
 			else if(strcmp(argv[i],"-R")==0)
 				no_builtin=true;
 			else if(strcmp(argv[i],"-f")==0 || strcmp(argv[i],"--file")==0)
@@ -309,7 +308,7 @@ int main(int argc,char**argv)
 			}
 			// Create dep_map and rule_map
 			// Skip if -l is used
-			if(!list_targets)
+			if(exec)
 			{
 				// Strip leading whitespace
 				std::regex r("[\t ]*(.*)");
@@ -354,7 +353,6 @@ int main(int argc,char**argv)
 			for(std::string s:rule_map[(dep_order.top())])
 			//for(std::string s:v)
 			{
-
 				// Expand macros
 				s=replace_macros(s,macro_map).c_str();
 
@@ -380,6 +378,7 @@ int main(int argc,char**argv)
 	// Print internal database if '-p' used
 	if(print_database)
 	{
+		if(exec)puts("");
 		printf("# macros found in '%s':\n",fn.c_str());
 		for(auto p:macro_map)
 		{
