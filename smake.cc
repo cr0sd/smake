@@ -6,7 +6,7 @@
 #include<stack>
 #include<map>
 
-#define VERSION "0.5.0"
+#define VERSION "0.5.1"
 #define PROG_NAME "smake"
 //#define WINDOWS
 #define DEFAULT_MAKEFILE "SMakefile"
@@ -196,28 +196,20 @@ int main(int argc,char**argv)
 	// Default smakefiles
 	else
 	{
+		char *trythese[]={	"Smakefile",
+							"smakefile",
+							"Makefile",
+							"makefile"};
+
 		// Try default name (SMakefile)
 		fn=dir+SLASH+DEFAULT_MAKEFILE;
 		f=fopen(fn.c_str(),"r");	
-		if(!f)
+
+		// Otherwise try these
+		for(auto that:trythese)
 		{
-			fn=dir+SLASH+"Smakefile";
-			f=fopen(fn.c_str(),"r");
-		}
-		if(!f)
-		{
-			fn=dir+SLASH+"smakefile";
-			f=fopen(fn.c_str(),"r");
-		}
-		// Otherwise try 'makefile'
-		if(!f)
-		{
-			fn=dir+SLASH+"Makefile";
-			f=fopen(fn.c_str(),"r");
-		}
-		if(!f)
-		{
-			fn=dir+SLASH+"makefile";
+			if(f)break;
+			fn=dir+SLASH+that,
 			f=fopen(fn.c_str(),"r");
 		}
 	}
