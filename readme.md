@@ -4,14 +4,14 @@ Make utility that can list the targets contained in
 the makefile.
 
 ```bash
-usage: smake [options] [target]<br>
--h, --help	This help<br>
--v, --version	Show version info<br>
--f, --file FILE	Use FILE as makefile<br>
--c		Set target to 'clean'<br>
--p		Print internal data<br>
--P		Alias to '-np'<br>
--R		Disable built-in macros<br>
+usage: smake [options] [target]
+-h, --help	This help
+-v, --version	Show version info
+-f, --file FILE	Use FILE as makefile
+-c		Set target to 'clean'
+-p		Print internal data
+-P		Alias to '-np'
+-R		Disable built-in macros
 -n		Print rules (do not execute)
 ```
 
