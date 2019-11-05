@@ -1,4 +1,5 @@
 Things we need to do:
 
 1. Recursive variable expansion?
-2. Multiple build targets?
+2. Allow printing # commented lines in rules
+3. Multiple build targets?
