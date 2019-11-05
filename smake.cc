@@ -99,6 +99,8 @@ int main(int argc,char**argv)
 			if(strcmp(argv[i],"--help")==0)
 				puts(HELPSTRING),
 				exit(0);
+			else if(strcmp(argv[i],"--file")==0)
+				custom_makefile=true;
 			else if(strlen(argv[i])>1 && argv[i][0]=='-')
 			{
 				// Process short flags (i.e., -X)
