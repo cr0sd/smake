@@ -130,21 +130,22 @@ int main(int argc,char**argv)
 						else if(argv[i][j]=='f')
 							custom_makefile=true;
 					}
-
-					if(custom_makefile)
-					{
-						puts("file from files");
-						if(++i>=argc)
-						{
-							puts(PROG_NAME ": error: expected FILE");
-							exit(1);
-						}
-						mkfn=argv[i];
-					}
 				}
+				if(!custom_makefile)continue;
+			}
+
+			if(custom_makefile)
+			{
+				if(++i>=argc)
+				{
+					puts(PROG_NAME ": error: expected FILE");
+					exit(1);
+				}
+				mkfn=argv[i];
 				continue;
 			}
 
+			/** DEFAULT OPTION: Makefile name **/
 			// No control flow here: Use continue before here to skip
 			act_tgt=argv[i];
 		}
