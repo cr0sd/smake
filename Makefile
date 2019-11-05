@@ -14,4 +14,4 @@ clean:
 install:smake
 	cp $(PROG) $(PREFIX)
 uninstall:
-	rm $(PREFIX)$(PROG)
+	$(RM) $(PREFIX)$(PROG)

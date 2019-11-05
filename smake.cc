@@ -83,7 +83,6 @@ int main(int argc,char**argv)
 	bool print_database=false;				// '-p': print all internal data
 	bool exec=true;							// Will build applicable targets
 	bool no_builtin=false;					// Disable built-in macros
-	bool custom_makefile=false;				// User specified filename
 
 	int cur_line=0;							// Line number for errors
 
@@ -96,6 +95,7 @@ int main(int argc,char**argv)
 	{
 		for(int i=1;i<argc;++i)
 		{
+			bool custom_makefile=false;	// Flag that user requested file name
 			if(strcmp(argv[i],"--help")==0)
 				puts(HELPSTRING),
 				exit(0);
@@ -129,6 +129,9 @@ int main(int argc,char**argv)
 							no_builtin=true;
 						else if(argv[i][j]=='f')
 							custom_makefile=true;
+						else
+							printf(PROG_NAME ": error: unknown option '%c'\n",argv[i][j]),
+							exit(1);
 					}
 				}
 				if(!custom_makefile)continue;
@@ -142,6 +145,7 @@ int main(int argc,char**argv)
 					exit(1);
 				}
 				mkfn=argv[i];
+				//custom_makefile=false;
 				continue;
 			}
 
