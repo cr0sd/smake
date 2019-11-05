@@ -196,10 +196,10 @@ int main(int argc,char**argv)
 	// Default smakefiles
 	else
 	{
-		char *trythese[]={	"Smakefile",
-							"smakefile",
-							"Makefile",
-							"makefile"};
+		const char *trythese[]={	"Smakefile",
+									"smakefile",
+									"Makefile",
+									"makefile"};
 
 		// Try default name (SMakefile)
 		fn=dir+SLASH+DEFAULT_MAKEFILE;
@@ -232,6 +232,7 @@ int main(int argc,char**argv)
 	 * 
 	 * Patterns:
 	 *	A. Target: dependencies
+	 *	C. Comment
 	 *	D. (Default case) Rule/command
 	 *	V. Variable assignment
 	 *	V+. Variable concatenation
@@ -305,7 +306,16 @@ int main(int argc,char**argv)
 		///// Copy comments to rules, but not anything else
 		///// Maybe handle comments per each pattern
 		else if(std::regex_match(line,reg="#.*"))
-			continue;
+			{
+				if(dep_map.size()==0)continue;
+				// Strip leading whitespace
+				std::regex r("[\t ]*(.*)");
+				std::regex_search(line,match,r);
+				std::string t=match[1];
+
+				// Push command onto TGT=>RULE vector
+				rule_map[cur_tgt].push_back(t);
+			}
 
 
 		/*** Pattern V ***/

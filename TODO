@@ -1,4 +1,5 @@
 Things we need to do:
 
-1. Allow printing # commented lines in rules
-2. Multiple build targets?
+1. Multiple build targets?
+2. Add GNU Make compliant special symbols?
+3. Add GNU Make ifeq/endif things?
