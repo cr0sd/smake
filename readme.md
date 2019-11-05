@@ -3,22 +3,17 @@
 Make utility that can list the targets contained in 
 the makefile.
 
-<code>usage: smake [options] [target]<br>
-
+<code>
+usage: smake [options] [target]<br>
 -h, --help	This help<br>
-
 -v, --version	Show version info<br>
-
 -f, --file FILE	Use FILE as makefile<br>
-
 -c		Set target to 'clean'<br>
-
 -p		Print internal data<br>
-
 -P		Alias to '-np'<br>
-
 -R		Disable built-in macros<br>
--n		Print rules (do not execute)</code>
+-n		Print rules (do not execute)
+</code>
 
 ### Features include
 
