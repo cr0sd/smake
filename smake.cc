@@ -7,7 +7,7 @@
 #include<map>
 
 #define PROG_NAME "smake"
-#define WINDOWS
+//#define WINDOWS
 #define DEFAULT_MAKEFILE "SMakefile"
 
 #if defined(WINDOWS)
@@ -251,6 +251,10 @@ int main(int argc,char**argv)
 
 		/*** Pattern C ***/
 		// Comment y'all
+
+
+		///// Copy comments to rules, but not anything else
+		///// Maybe handle comments per each pattern
 		else if(std::regex_match(line,reg="#.*"))
 			continue;
 
