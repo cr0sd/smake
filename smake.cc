@@ -324,16 +324,26 @@ int main(int argc,char**argv)
 
 		/*** Pattern I ***/
 		// ifdef
-		else if(std::regex_match(line,reg=R"([ \t]*ifdef[ \t]+(.+))"))
+		else if(std::regex_match(line,reg=R"([ \t]*if(def|eq)[ \t]+(\$*\(*[a-zA-Z_\.]+\))[[ \t]+(\$*\(*[a-zA-Z_\.]+\)*)]*)"))
 		{
-			std::regex r(R"([ \t]*ifdef[ \t]+([^ ]+)[ \t]*)");
-			std::regex_search(line,match,r);
+			//std::regex r(R"([ \t]*ifdef[ \t]+([^ ]+)[ \t]*)");
+			std::regex_search(line,match,reg);
 
+			printf("if%s '%s' '%s'\n",match[1].str().c_str(),
+				match[2].str().c_str(),
+				match[3].str().c_str());
 
-			bool cond=replace_macros(match[1],macro_map).empty()==false;
+			bool cond=false;
+			if(match[1].str()=="def")
+				cond=replace_macros(match[2],macro_map).empty()==false;
+			else if(match[1].str()=="eq")
+				cond=
+					replace_macros(match[2],macro_map)==
+					replace_macros(match[3],macro_map);
+
 			cond_stack.push(cond && (cond_stack.size()==0 || cond_stack.top()));
 
-			printf("IFDEF: %s\n",cond_stack.top()?"TRUE":"FALSE");
+			printf("IF%s: %s\n",match[1].str().c_str(),cond_stack.top()?"TRUE":"FALSE");
 		}
 
 		/*** Pattern I- ***/
@@ -374,7 +384,7 @@ int main(int argc,char**argv)
 			// We want to parse assignments here
 
 			if(cond_stack.size()!=0 && cond_stack.top()==false)
-				continue; // This depends on what is inside this while loop
+				continue;
 
 			std::regex_search(line,match,reg);
 
@@ -398,6 +408,10 @@ int main(int argc,char**argv)
 		// Concatenate VALUE to end of VAR
 		else if(std::regex_match(line,reg="([a-zA-Z_]*) +\\+= *(.*)"))
 		{
+
+			if(cond_stack.size()!=0 && cond_stack.top()==false)
+				continue;
+
 			std::regex_search(line,match,reg);
 
 			if(match[1].str().empty())
