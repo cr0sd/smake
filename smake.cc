@@ -329,7 +329,9 @@ int main(int argc,char**argv)
 			std::regex r(R"([ \t]*ifdef[ \t]+([^ ]+)[ \t]*)");
 			std::regex_search(line,match,r);
 
-			cond_stack.push(replace_macros(match[1],macro_map).empty()==false);
+
+			bool cond=replace_macros(match[1],macro_map).empty()==false;
+			cond_stack.push(cond && (cond_stack.size()==0 || cond_stack.top()));
 
 			printf("IFDEF: %s\n",cond_stack.top()?"TRUE":"FALSE");
 		}
@@ -370,6 +372,9 @@ int main(int argc,char**argv)
 		{
 			// PARSE ASSIGNMENTS
 			// We want to parse assignments here
+
+			if(cond_stack.size()!=0 && cond_stack.top()==false)
+				continue; // This depends on what is inside this while loop
 
 			std::regex_search(line,match,reg);
 

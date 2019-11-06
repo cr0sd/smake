@@ -4,19 +4,13 @@ CXXFLAGS=-Wfatal-errors -Wall -Wextra -Os
 PROG=smake
 PREFIX=/usr/local/bin/
 
-ifdef $(FATNESS)
-
-ifdef $(SANDWICH)
-
-#CXXFLAGS += -D WINDOWS
-#CXXFLAGS += -U GNULINUX
-
+ifdef $(OS)
+CXXFLAGS += -D WINDOWS
+CXXFLAGS += -U GNULINUX
 endif
 
-endif
-
-CXXFLAGS += -U WINDOWS
-CXXFLAGS += -D GNULINUX
+#CXXFLAGS += -U WINDOWS
+#CXXFLAGS += -D GNULINUX
 
 APPEND=dd status=none oflag=append conv=notrunc of=
 README=readme.md
