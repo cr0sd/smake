@@ -7,11 +7,13 @@ PREFIX=/usr/local/bin/
 ifeq $(OS) Windows_NT
 CXXFLAGS += -D WINDOWS
 CXXFLAGS += -U GNULINUX
+THIS=.\smake
 endif
 
 ifeq $(OS) Linux
 CXXFLAGS += -U WINDOWS
 CXXFLAGS += -D GNULINUX
+THIS=./smake
 endif
 
 APPEND=dd status=none oflag=append conv=notrunc of=
@@ -26,7 +28,7 @@ clean:
 	@$(RM) smake *.o
 docs:#smake
 	cat doc/head > $(README)
-	./smake -h | $(APPEND)$(README)
+	$(THIS) -h | $(APPEND)$(README)
 	cat doc/foot | $(APPEND)$(README)
 install:smake
 	cp $(PROG) $(PREFIX)
