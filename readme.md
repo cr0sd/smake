@@ -5,14 +5,14 @@ the makefile.
 
 ```bash
 usage: smake [options] [target]
--h, --help	This help
--v, --version	Show version info
--f, --file FILE	Use FILE as makefile
--c		Set target to 'clean'
--p		Print internal data
--P		Alias to '-np'
--R		Disable built-in macros
--n		Print rules (do not execute)
+-h, --help			This help
+-v, --version			Show version info
+-f, --file FILE			Use FILE as makefile
+-c				Set target to 'clean'
+-p				Print internal data
+-P				Alias to '-np'
+-R, --no-builtin-variables	Disable built-in macros
+-n, --just-print		Print rules (do not execute)
 ```
 
 ### Features include

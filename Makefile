@@ -4,11 +4,11 @@ CXXFLAGS=-Wfatal-errors -Wall -Wextra -Os
 PROG=smake
 PREFIX=/usr/local/bin/
 
-CXXFLAGS += -D WINDOWS
-CXXFLAGS += -U GNULINUX
+#CXXFLAGS += -D WINDOWS
+#CXXFLAGS += -U GNULINUX
 
-#CXXFLAGS += -U WINDOWS
-#CXXFLAGS += -D GNULINUX
+CXXFLAGS += -U WINDOWS
+CXXFLAGS += -D GNULINUX
 
 # This is a makefile so for to as testingly :-D
 
