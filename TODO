@@ -1,6 +1,6 @@
 Things we need to do:
 
-1. Multiple build targets?
-2. Add GNU Make compliant special symbols?
-3. Add GNU Make ifeq/endif things?
+1. Control flow directives
+2. Multiple build targets?
+3. GNU special symbols (e.g., $@)?
 4. Line concatenation with `\`?

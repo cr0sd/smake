@@ -10,6 +10,9 @@ PREFIX=/usr/local/bin/
 CXXFLAGS += -U WINDOWS
 CXXFLAGS += -D GNULINUX
 
+APPEND=dd status=none oflag=append conv=notrunc of=
+README=readme.md
+
 # This is a makefile so for to as testingly :-D
 
 all :
@@ -17,12 +20,10 @@ all :
 	$(CXX) $(PROG).cc -o $(PROG) $(CXXFLAGS)
 clean:
 	@$(RM) smake *.o
-docs:
-	# Overwrite readme.md and insert
-	# up-to-date help info into file
-	cat doc/head > readme.md
-	./smake --help | tee -a readme.md
-	cat doc/foot | tee -a readme.md
+docs:#smake
+	cat doc/head > $(README)
+	./smake -h | $(APPEND)$(README)
+	cat doc/foot | $(APPEND)$(README)
 install:smake
 	cp $(PROG) $(PREFIX)
 uninstall:
