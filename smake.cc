@@ -48,6 +48,8 @@ std::string cwd()
 	return s;
 }
 
+
+// Expand macros (e.g., '$(OS)' ~~> 'Windows_NT')
 std::string
 replace_macros(std::string s,
 	std::map<std::string,std::string>macro_map)
@@ -84,6 +86,8 @@ int main(int argc,char**argv)
 		rule_map;							// Rule map
 	std::map<std::string,std::string>
 		macro_map;							// Associative macro list (MACNAME => VALUE)
+
+	std::stack<bool>cond_stack;				// Conditional operation (nestable)
 
 	std::string cur_tgt="";					// Current target
 	std::string act_tgt="";					// Active target
@@ -318,13 +322,35 @@ int main(int argc,char**argv)
 		}
 
 
+		/*** Pattern I ***/
+		// ifdef
+		else if(std::regex_match(line,reg=R"([ \t]*ifdef[ \t]+(.+))"))
+		{
+			std::regex r(R"([ \t]*ifdef[ \t]+([^ ]+)[ \t]*)");
+			std::regex_search(line,match,r);
+
+			cond_stack.push(replace_macros(match[1],macro_map).empty()==false);
+
+			printf("IFDEF: %s\n",cond_stack.top()?"TRUE":"FALSE");
+		}
+
+		/*** Pattern I- ***/
+		else if(std::regex_match(line,reg=R"([ \t]*endif[ \t]*)"))
+		{
+			cond_stack.pop();
+			if(cond_stack.empty()==false)
+				printf("ENDIF: (back to) %s\n",
+					cond_stack.top()?"TRUE":"FALSE");
+			else
+				puts("ENDIF: (back to) TRUE");
+		}
+
+
 		/*** Pattern C ***/
 		// Comment y'all
-
-
 		///// Copy comments to rules, but not anything else
 		///// Maybe handle comments per each pattern
-		else if(std::regex_match(line,reg="#.*"))
+		else if(std::regex_match(line,reg="[ \t]*#.*"))
 			{
 				if(dep_map.size()==0)continue;
 				// Strip leading whitespace
