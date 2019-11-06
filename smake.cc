@@ -329,9 +329,9 @@ int main(int argc,char**argv)
 			//std::regex r(R"([ \t]*ifdef[ \t]+([^ ]+)[ \t]*)");
 			std::regex_search(line,match,reg);
 
-			printf("if%s '%s' '%s'\n",match[1].str().c_str(),
-				match[2].str().c_str(),
-				match[3].str().c_str());
+			//printf("if%s '%s' '%s'\n",match[1].str().c_str(),
+				//match[2].str().c_str(),
+				//match[3].str().c_str());
 
 			bool cond=false;
 			if(match[1].str()=="def")
@@ -343,18 +343,19 @@ int main(int argc,char**argv)
 
 			cond_stack.push(cond && (cond_stack.size()==0 || cond_stack.top()));
 
-			printf("IF%s: %s\n",match[1].str().c_str(),cond_stack.top()?"TRUE":"FALSE");
+			//printf("IF%s: %s\n",match[1].str().c_str(),cond_stack.top()?"TRUE":"FALSE");
 		}
 
 		/*** Pattern I- ***/
 		else if(std::regex_match(line,reg=R"([ \t]*endif[ \t]*)"))
 		{
-			cond_stack.pop();
 			if(cond_stack.empty()==false)
-				printf("ENDIF: (back to) %s\n",
-					cond_stack.top()?"TRUE":"FALSE");
+				cond_stack.pop();
 			else
-				puts("ENDIF: (back to) TRUE");
+			{
+				printf(PROG_NAME": %d: error: unexpected endif",cur_line);
+				exit(1);
+			}
 		}
 
 
