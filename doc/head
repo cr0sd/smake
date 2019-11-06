@@ -1,0 +1,6 @@
+### smake
+
+Make utility that can list the targets contained in 
+the makefile.
+
+```bash

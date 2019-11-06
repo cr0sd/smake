@@ -17,6 +17,12 @@ all :
 	$(CXX) $(PROG).cc -o $(PROG) $(CXXFLAGS)
 clean:
 	@$(RM) smake *.o
+docs:
+	# Overwrite readme.md and insert
+	# up-to-date help info into file
+	cat doc/head > readme.md
+	./smake --help | tee -a readme.md
+	cat doc/foot | tee -a readme.md
 install:smake
 	cp $(PROG) $(PREFIX)
 uninstall:
