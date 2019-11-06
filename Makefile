@@ -1,9 +1,14 @@
 CXX=g++
 CC=gcc
 CXXFLAGS=-Wfatal-errors -Wall -Wextra -Os
-CXXFLAGS += -Wall
 PROG=smake
 PREFIX=/usr/local/bin/
+
+CXXFLAGS += -D WINDOWS
+CXXFLAGS += -U GNULINUX
+
+#CXXFLAGS += -U WINDOWS
+#CXXFLAGS += -D GNULINUX
 
 # This is a makefile so for to as testingly :-D
 

@@ -12,7 +12,7 @@
 
 
 //#define WINDOWS
-#define GNULINUX
+//#define GNULINUX
 #if defined(WINDOWS)
 	#define SLASH "\\"
 	#include<windows.h>
