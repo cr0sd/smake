@@ -1,6 +1,6 @@
 Things we need to do:
 
-1. Control flow directives
-2. Multiple build targets?
-3. GNU special symbols (e.g., $@)?
-4. Line concatenation with `\`?
+1. Make conditionals compatible with GNU Make
+2. Line concatenation with `\`?
+3. Multiple build targets?
+4. GNU special symbols (e.g., $@)?
