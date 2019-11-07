@@ -326,7 +326,8 @@ int main(int argc,char**argv)
 		/*** Pattern I ***/
 		// ifdef
 		else if(std::regex_match(line,
-			reg=R"([ \t]*if(def|eq)[ \t]+\((\$*\(*[a-zA-Z_/\.]+\))[,[ \t]*(\$*\(*[a-zA-Z_/\.]+\)*)\)]*)"))
+			//reg=R"([ \t]*if(def|eq)[ \t]+\(([\$\(]?[a-zA-Z_/\.]+\)?)[,[ \t]*([\$\(]?[a-zA-Z_/\.]+\)?)\)]*)"))
+			reg=R"([ \t]*if(def|eq)[ \t]*\((.*)[,[ \t]*(.*)]?\)[ \t]*)"))
 		{
 			//std::regex r(R"([ \t]*ifdef[ \t]+([^ ]+)[ \t]*)");
 			std::regex_search(line,match,reg);
@@ -358,6 +359,20 @@ int main(int argc,char**argv)
 				printf(PROG_NAME": %d: error: unexpected endif",cur_line);
 				exit(1);
 			}
+		}
+
+		/*** Pattern E ***/
+		else if(std::regex_match(line,reg="[ \t]*else[ \t]*[#.*]*"))
+		{
+			// Do not change nesting level, just Complement
+			// the bool condition at top level of stack
+			// Important: Make sure the previous level is also
+			// TRUE!
+
+			bool nv=cond_stack.top();
+			cond_stack.pop();
+			cond_stack.push(!nv && 
+				(cond_stack.size()==0 || cond_stack.top()));
 		}
 
 
@@ -453,6 +468,12 @@ int main(int argc,char**argv)
 	}
 	fclose(f);
 
+
+	// Check that conditionals were closed correctly
+	// (i.e., count(if*) == count(endif))
+	if(cond_stack.size()!=0)
+		puts(PROG_NAME": error: conditional has no matching endif"),
+		exit(1);
 
 
 	// PART 2 -----

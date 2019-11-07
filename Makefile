@@ -4,21 +4,24 @@ CXXFLAGS=-Wfatal-errors -Wall -Wextra -Os -Wno-unused-result
 PROG=smake
 PREFIX=/usr/local/bin/
 
+
 ifeq ($(OS),Windows_NT)
 CXXFLAGS += -D WINDOWS
 CXXFLAGS += -U GNULINUX
 THIS=.\smake
-endif
 
-ifeq ($(OS),GNU/Linux)
+else
+
 CXXFLAGS += -U WINDOWS
 CXXFLAGS += -D GNULINUX
 THIS=./smake
 endif
 
-#ifdef ($(SMAKE),$(OS))
-#ISSMAKE=Smake version: $(SMAKE)
-#endif
+ifdef ($(SMAKE))
+ISSMAKE=Smake version: $(SMAKE)
+else
+ISSMAKE=Not Smake :-(
+endif
 
 APPEND=dd status=none oflag=append conv=notrunc of=
 README=readme.md
