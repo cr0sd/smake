@@ -6,7 +6,7 @@
 #include<stack>
 #include<map>
 
-#define VERSION "0.5.1"
+#define VERSION "0.5.2"
 #define PROG_NAME "smake"
 #define DEFAULT_MAKEFILE "SMakefile"
 
@@ -203,6 +203,7 @@ int main(int argc,char**argv)
 		macro_map["PWD"]=dir;
 		macro_map["RM"]="rm -f"; // GNU Make uses the '-f' flag (so we do too)
 		macro_map["OS"]=OS_MACRO;
+		macro_map["SMAKE"]=VERSION; // So we know this is Smake
 	}
 
 
