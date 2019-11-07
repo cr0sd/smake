@@ -4,9 +4,14 @@ CXXFLAGS=-Wfatal-errors -Wall -Wextra -Os -Wno-unused-result
 PROG=smake
 PREFIX=/usr/local/bin/
 
-
-CXXFLAGS += -D GNULINUX
+ifeq ($(OS),Windows_NT)
+CXXFLAGS += -D WINDOWS
 THIS=.\smake
+else
+CXXFLAGS += -D GNULINUX
+THIS=./smake
+endif
+endif
 
 ifdef ($(SMAKE))
 ISSMAKE=Smake :-) version: $(SMAKE)

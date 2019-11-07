@@ -329,8 +329,7 @@ int main(int argc,char**argv)
 			reg=R"(ifdef \((\$\([a-zA-Z_\.]*\)|[a-zA-Z_\.]*)\))"))
 		{
 			std::regex_search(line,match,reg);
-			bool cond=false;
-				cond=replace_macros(match[1],macro_map).empty()==false;
+			bool cond=replace_macros(match[1],macro_map).empty()==false;
 			cond_stack.push(cond && (cond_stack.size()==0 || cond_stack.top()));
 		}
 
@@ -339,11 +338,11 @@ int main(int argc,char**argv)
 		/*** Pattern I#2 ***/
 		// ifeq
 		else if(std::regex_match(line,
-			reg=R"(ifeq \((\$\([a-zA-Z_\.]*\)|[a-zA-Z_\.]*)\))"))
+			reg=R"(ifeq \((\$\([a-zA-Z_\.]*\)|[a-zA-Z_\.]*),(\$\([a-zA-Z_\.]*\)|[a-zA-Z_\.]*)\))"))
 		{
 			std::regex_search(line,match,reg);
-			bool cond=false;
-				cond=replace_macros(match[1],macro_map).empty()==false;
+			bool cond=replace_macros(match[1],macro_map)==
+				replace_macros(match[2],macro_map);
 			cond_stack.push(cond && (cond_stack.size()==0 || cond_stack.top()));
 		}
 
@@ -356,7 +355,7 @@ int main(int argc,char**argv)
 				cond_stack.pop();
 			else
 			{
-				printf(PROG_NAME": %d: error: unexpected endif",cur_line);
+				printf(PROG_NAME": %d: error: unexpected endif\n",cur_line);
 				exit(1);
 			}
 		}
