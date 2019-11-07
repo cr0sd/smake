@@ -7,18 +7,16 @@ PREFIX=/usr/local/bin/
 
 ifeq ($(OS),Windows_NT)
 CXXFLAGS += -D WINDOWS
-CXXFLAGS += -U GNULINUX
 THIS=.\smake
 
 else
 
-CXXFLAGS += -U WINDOWS
 CXXFLAGS += -D GNULINUX
 THIS=./smake
 endif
 
 ifdef ($(SMAKE))
-ISSMAKE=Smake version: $(SMAKE)
+ISSMAKE=Smake :-) version: $(SMAKE)
 else
 ISSMAKE=Not Smake :-(
 endif

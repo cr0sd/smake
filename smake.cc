@@ -342,7 +342,11 @@ int main(int argc,char**argv)
 			else if(match[1].str()=="eq")
 				cond=
 					replace_macros(match[2],macro_map)==
-					replace_macros(match[3],macro_map);
+					replace_macros(match[3],macro_map),
+				printf("'%s'=='%s'? %s\n",
+					match[2].str().c_str(),
+					match[2].str().c_str(),
+					cond?"true":"false");
 
 			cond_stack.push(cond && (cond_stack.size()==0 || cond_stack.top()));
 
