@@ -258,6 +258,8 @@ int main(int argc,char**argv)
 	 *	A. Target: dependencies
 	 *	C. Comment
 	 *	D. (Default case) Rule/command
+	 *	I. If conditionals...
+	 *	I-. Endif
 	 *	V. Variable assignment
 	 *	V+. Variable concatenation
 	 * 
@@ -326,7 +328,7 @@ int main(int argc,char**argv)
 		/*** Pattern I#1 ***/
 		// ifdef
 		else if(std::regex_match(line,
-			reg=R"(ifdef \((\$\([a-zA-Z_\.]*\)|[a-zA-Z_\.]*)\))"))
+			reg=R"([ \t]*ifdef[ \t]+\([ \t]*(\$\([a-zA-Z_\.]*\)|[a-zA-Z_\.]*)[ \t]*\)[ \t]*)"))
 		{
 			std::regex_search(line,match,reg);
 			bool cond=replace_macros(match[1],macro_map).empty()==false;
@@ -338,7 +340,7 @@ int main(int argc,char**argv)
 		/*** Pattern I#2 ***/
 		// ifeq
 		else if(std::regex_match(line,
-			reg=R"(ifeq \((\$\([a-zA-Z_\.]*\)|[a-zA-Z_\.]*),(\$\([a-zA-Z_\.]*\)|[a-zA-Z_\.]*)\))"))
+			reg=R"([ \t]*ifeq[ \t]+\([ \t]*(\$\([a-zA-Z_\.]*\)|[a-zA-Z_\.]*)[ \t]*,[ \t]*(\$\([a-zA-Z_\.]*\)|[a-zA-Z_\.]*)[ \t]*\)[ \t]*)"))
 		{
 			std::regex_search(line,match,reg);
 			bool cond=replace_macros(match[1],macro_map)==

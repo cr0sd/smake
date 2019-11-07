@@ -25,7 +25,7 @@ README=readme.md
 
 all: smake
 smake:
-	#@echo $(OS) $(ISSMAKE)
+	#$(OS) $(ISSMAKE)
 	# We will now build the thing...
 	$(CXX) $(PROG).cc -o $(PROG) $(CXXFLAGS)
 clean:
