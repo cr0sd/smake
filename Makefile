@@ -4,13 +4,13 @@ CXXFLAGS=-Wfatal-errors -Wall -Wextra -Os
 PROG=smake
 PREFIX=/usr/local/bin/
 
-ifeq $(OS) Windows_NT
+ifeq ($(OS),Windows_NT)
 CXXFLAGS += -D WINDOWS
 CXXFLAGS += -U GNULINUX
 THIS=.\smake
 endif
 
-ifeq $(OS) GNU/Linux
+ifeq ($(OS),GNU/Linux)
 CXXFLAGS += -U WINDOWS
 CXXFLAGS += -D GNULINUX
 THIS=./smake

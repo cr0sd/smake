@@ -1,6 +1,6 @@
 Things we need to do:
 
-1. Make conditionals compatible with GNU Make
+1. Add more conditionals
 2. Line concatenation with `\`?
 3. Multiple build targets?
 4. GNU special symbols (e.g., $@)?

@@ -325,7 +325,7 @@ int main(int argc,char**argv)
 		/*** Pattern I ***/
 		// ifdef
 		else if(std::regex_match(line,
-			reg=R"([ \t]*if(def|eq)[ \t]+(\$*\(*[a-zA-Z_/\.]+\))[[ \t]+(\$*\(*[a-zA-Z_/\.]+\)*)]*)"))
+			reg=R"([ \t]*if(def|eq)[ \t]+\((\$*\(*[a-zA-Z_/\.]+\))[,[ \t]*(\$*\(*[a-zA-Z_/\.]+\)*)\)]*)"))
 		{
 			//std::regex r(R"([ \t]*ifdef[ \t]+([^ ]+)[ \t]*)");
 			std::regex_search(line,match,reg);
