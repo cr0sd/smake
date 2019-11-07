@@ -11,7 +11,6 @@ else
 CXXFLAGS += -D GNULINUX
 THIS=./smake
 endif
-endif
 
 ifdef ($(SMAKE))
 ISSMAKE=Smake :-) version: $(SMAKE)
