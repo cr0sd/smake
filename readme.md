@@ -5,7 +5,7 @@ the makefile.
 
 ```bash
 smake 0.5.1 
-Build Nov  6 2019 18:03:44
+Build Nov  6 2019 18:13:53
 usage: smake [options] [target]
 -h, --help			This help
 -v, --version			Show version info
