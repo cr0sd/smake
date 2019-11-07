@@ -5,15 +5,8 @@ PROG=smake
 PREFIX=/usr/local/bin/
 
 
-ifeq ($(OS),Windows_NT)
-CXXFLAGS += -D WINDOWS
-THIS=.\smake
-
-else
-
 CXXFLAGS += -D GNULINUX
-THIS=./smake
-endif
+THIS=.\smake
 
 ifdef ($(SMAKE))
 ISSMAKE=Smake :-) version: $(SMAKE)
