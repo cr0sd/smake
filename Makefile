@@ -31,10 +31,10 @@ smake:
 clean:
 	@$(RM) smake *.o
 docs: #smake
-	cat doc/head > $(README)
+	cat docs/head > $(README)
 	$(THIS) -v | $(APPEND)$(README)
 	$(THIS) -h | $(APPEND)$(README)
-	cat doc/foot | $(APPEND)$(README)
+	cat docs/foot | $(APPEND)$(README)
 install: smake
 	cp $(PROG) $(PREFIX)
 uninstall:

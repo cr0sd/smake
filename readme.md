@@ -1,11 +1,12 @@
 ### smake
 
 Make utility that can list the targets contained in 
-the makefile.
+the makefile. Also defines `$(OS)` for Windows_NT or
+GNU/Linux.
 
 ```bash
 smake 0.5.2 
-Build Nov  7 2019 09:42:47
+Build Nov  7 2019 10:02:19
 usage: smake [options] [target]
 -h, --help			This help
 -v, --version			Show version info
