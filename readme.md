@@ -4,6 +4,8 @@ Make utility that can list the targets contained in
 the makefile.
 
 ```bash
+smake 0.5.1 
+Build Nov  6 2019 18:03:44
 usage: smake [options] [target]
 -h, --help			This help
 -v, --version			Show version info
