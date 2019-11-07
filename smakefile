@@ -29,6 +29,7 @@ clean:
 	@$(RM) smake *.o
 docs:#smake
 	cat doc/head > $(README)
+	$(THIS) -v | $(APPEND)$(README)
 	$(THIS) -h | $(APPEND)$(README)
 	cat doc/foot | $(APPEND)$(README)
 install:smake
