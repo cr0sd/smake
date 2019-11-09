@@ -279,12 +279,13 @@ int main(int argc,char**argv)
 		{
 			// Get line
 			fgets(str,512,f);
+			if(feof(f))*str=0;
 			++cur_line;
 
 			// Check for concat char
 			{
 				char*p=strstr(str,"\\\n");
-				if(p)
+				if(p && !feof(f))
 					*p=0,
 					//strcpy(p,""),
 					concat_line=true;
@@ -303,7 +304,11 @@ int main(int argc,char**argv)
 			line=std::regex_replace(line,reg="[ \t]*\n","");	// Remove space at end
 			line=std::regex_replace(line,reg="^[ \t]","");		// Remove initial space
 
-		} while(concat_line);
+		} while(!feof(f) && concat_line);
+
+		if(feof(f) && concat_line)
+			printf(PROG_NAME": %d: error: line concatenation at EOF",cur_line),
+			exit(1);
 
 		// Check for empty line
 		//if(std::regex_match(line,reg="[ \t\n]*")) 
