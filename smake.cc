@@ -269,22 +269,38 @@ int main(int argc,char**argv)
 	{
 		std::smatch match;
 		std::regex reg;
-		std::string line;
-		char str[512]={0};
+		std::string line="";
+		char str[512];
+		bool concat_line=false;
 
-		// Get line
-		fgets(str,512,f);
-		++cur_line;
+		// Get line until last char isn't '\'
+		do
+		{
+			// Get line
+			fgets(str,512,f);
+			++cur_line;
 
-		// Copy line to std::string
-		line=str;
+			// Check for concat char
+			{
+				char*p=strstr(str,"\\\n");
+				if(p)
+					*p=0,
+					//strcpy(p,""),
+					concat_line=true;
+					//puts(str);
+				else
+					concat_line=false;
+			}
+	
+			// Copy line to std::string
+			line+=str;
+			//puts(str);
 
-		// Remove endline (from fgets)
-		//std::replace(line.begin(),line.end(),'\n','');
+			//line=std::regex_replace(line,reg="\\\n","");
+			line=std::regex_replace(line,reg="[ \t]*\n","");	// Remove space at end
+			line=std::regex_replace(line,reg="^[ \t]","");		// Remove initial space
 
-		line=std::regex_replace(line,reg="[ \t]*\n","");	// Remove space at end
-		line=std::regex_replace(line,reg="^[ \t]","");		// Remove initial space
-		//puts(line.c_str());
+		} while(concat_line);
 
 		// Check for empty line
 		//if(std::regex_match(line,reg="[ \t\n]*")) 
@@ -450,7 +466,7 @@ int main(int argc,char**argv)
 		{
 			if(dep_map.empty())
 			{
-				printf(PROG_NAME": %d: error: recipe before first target\n",cur_line);
+				printf(PROG_NAME": %d: error: rule/command before first target\n",cur_line);
 				exit(1);
 			}
 

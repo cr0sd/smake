@@ -3,8 +3,13 @@
 #CC = cc
 #RM = rm
 
+#hey this is a \
+comment
+
 all:a
-	# This one is done after all dependencies
+	# This one is done after all dependencies \
+	this are comments boys\
+	this are still comments boys
 	@echo Compiling for $(OS)...
 a:a.o
 	$(CC) a.o b.o c.o -o a
