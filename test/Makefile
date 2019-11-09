@@ -6,16 +6,17 @@
 #hey this is a \
 comment
 
-all:a
+all:	a
 	# This one is done after all dependencies \
 	this are comments boys\
 	this are still comments boys
 	@echo Compiling for $(OS)...
-a:a.o
+a:		a.o
 	$(CC) a.o b.o c.o -o a
-a.o:b.o c.o
+a.o:	b.o \
+		c.o
 	$(CC) -c a.c
-b.o:e.o
+b.o:	e.o
 	$(CC) -c b.c
 c.o:
 	$(CC) -c c.c

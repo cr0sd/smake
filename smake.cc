@@ -320,7 +320,7 @@ int main(int argc,char**argv)
 		/*** Pattern A ***/
 		// Check if line matches target definition
 		// Set target if so
-		reg="([a-zA-Z_/\\-\\.]+)[ \\t]*:(.*)";
+		reg="([a-zA-Z_/\\-\\.]+)[ \\t]*:[ \\t]*(.*)";
 		// Target format: "(name_of_target): (dependencies)"
 		//                 Group 1           Group 2
 		if(std::regex_match(line,reg))
@@ -336,14 +336,20 @@ int main(int argc,char**argv)
 			// Map TARGET => Dependencies
 
 			// Split deps by space
-			std::string tmp; 
-			std::stringstream ss(match[2]);
+			std::string tmp=match[2].str(); 
+			
+			// First, use tmp to replace whitespace with ' '
+			tmp=std::regex_replace(tmp,(std::regex)"\t"," ");
+
+			std::stringstream ss(tmp);
 
 			while(std::getline(ss,tmp,' '))
 				dep_map[cur_tgt].push_back(tmp);
 
 			if(match[2].str().empty())
 				dep_map[cur_tgt].clear();
+			//else
+				//printf("TARGET Deps:'%s'\n",match[2].str().c_str());
 
 			if(act_tgt==cur_tgt)
 				found_tgt=true;
