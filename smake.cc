@@ -320,7 +320,7 @@ int main(int argc,char**argv)
 		/*** Pattern A ***/
 		// Check if line matches target definition
 		// Set target if so
-		reg="([a-zA-Z_\\-\\.]+)[ \\t]*:(.*)";
+		reg="([a-zA-Z_/\\-\\.]+)[ \\t]*:(.*)";
 		// Target format: "(name_of_target): (dependencies)"
 		//                 Group 1           Group 2
 		if(std::regex_match(line,reg))
