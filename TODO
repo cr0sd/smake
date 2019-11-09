@@ -2,6 +2,5 @@ Things we need to do:
 
 1. Add more conditionals
 2. Add target-file checking
-3. Line concatenation with `\`?
-4. Multiple build targets?
-5. GNU special symbols (e.g., $@)?
+3. Multiple build targets?
+4. GNU special symbols (e.g., $@)?
