@@ -273,7 +273,8 @@ int main(int argc,char**argv)
 		char str[512];
 		bool concat_line=false;
 
-		// Get line until last char isn't '\'
+		// Get line
+		// Repeat and concatenate for /\\\n/ sequence
 		do
 		{
 			// Get line
@@ -291,9 +292,11 @@ int main(int argc,char**argv)
 				else
 					concat_line=false;
 			}
-	
+
+
 			// Copy line to std::string
-			line+=str;
+			if(str[0]=='\t')line+=str+1;
+			else line+=str;
 			//puts(str);
 
 			//line=std::regex_replace(line,reg="\\\n","");
