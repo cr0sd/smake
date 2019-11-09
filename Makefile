@@ -23,19 +23,23 @@ README=readme.md
 
 # This is a makefile so for to as testingly :-D
 
-all: smake
-smake:
+all: \
+	smake
+smake: \
+
 	#$(OS) $(ISSMAKE)
 	# We will now build the thing...
 	$(CXX) $(PROG).cc -o $(PROG) $(CXXFLAGS)
 clean:
 	@$(RM) smake *.o
-docs: #smake
+docs: \
+	smake
 	cat docs/head > $(README)
 	$(THIS) -v | $(APPEND)$(README)
 	$(THIS) -h | $(APPEND)$(README)
 	cat docs/foot | $(APPEND)$(README)
-install: smake
+install: \
+	smake
 	cp $(PROG) $(PREFIX)
 uninstall:
 	$(RM) $(PREFIX)$(PROG)
