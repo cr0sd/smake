@@ -5,8 +5,8 @@ the makefile. Also defines `$(OS)` for Windows_NT or
 GNU/Linux.
 
 ```bash
-smake 0.5.2 
-Build Nov  7 2019 10:02:19
+smake 0.5.3 
+Build Nov  9 2019 13:09:41
 usage: smake [options] [target]
 -h, --help			This help
 -v, --version			Show version info

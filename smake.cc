@@ -7,7 +7,7 @@
 #include<stack>
 #include<map>
 
-#define VERSION "0.5.2"
+#define VERSION "0.5.3"
 #define PROG_NAME "smake"
 #define DEFAULT_MAKEFILE "SMakefile"
 
