@@ -46,3 +46,4 @@ install: \
 	cp $(PROG) $(PREFIX)
 uninstall:
 	$(RM) $(PREFIX)$(PROG)
+.PHONY: all docs

@@ -103,6 +103,7 @@ int main(int argc,char**argv)
 	bool exec=true;							// Will build applicable targets
 	bool no_builtin=false;					// Disable built-in macros
 	bool force_build=false;					// Ignore file-checking
+	bool found_phony=false;					// Whether .PHONY target defined
 
 	int cur_line=0;							// Line number for errors
 
@@ -357,6 +358,12 @@ int main(int argc,char**argv)
 			//else
 				//printf("TARGET Deps:'%s'\n",match[2].str().c_str());
 
+
+			// Check for makefile 'target directives'
+			// (instructions for Make/Smake)
+			if(match[1].str()==".PHONY")
+				found_phony=true;
+
 			if(act_tgt==cur_tgt)
 				found_tgt=true;
 		}
@@ -554,19 +561,21 @@ int main(int argc,char**argv)
 				dep_order.top())!=already.end() &&
 				!force_build)
 			{
-				//already.push_back(dep_order.top());
-					//printf("'%s' already processed\n",
-						//dep_order.top().c_str());
-					//puts("force_build no set, skipping");
 				dep_order.pop();
 				continue;
 			}
 			//else force_build=true; // build upper tree
 
+			// Do not repeat targets
 			already.push_back(dep_order.top());
-			//if(std::filesystem::exists(
-				//dir+SLASH+dep_order.top()) && !force_build)
-			if(std::filesystem::is_regular_file(
+
+			// Do not process targets with corresponding reg file
+			if(!found_phony || std::find(dep_map[".PHONY"].begin(),
+				dep_map[".PHONY"].end(),dep_order.top())!=dep_map[".PHONY"].end())
+			{
+				//puts("phony target, should not check files");
+			}
+			else if(std::filesystem::is_regular_file(
 				dir+SLASH+dep_order.top()) && !force_build)
 			{
 				printf("Nothing to be done for '%s'\n",
@@ -575,6 +584,7 @@ int main(int argc,char**argv)
 				continue;
 			}
 
+			// Process rules for this target
 			for(std::string s:rule_map[(dep_order.top())])
 			//for(std::string s:v)
 			{

@@ -6,7 +6,7 @@ GNU/Linux.
 
 ```bash
 smake 0.5.3 
-Build Nov 11 2019 10:28:27
+Build Nov 11 2019 11:01:20
 usage: smake [options] [target]
 -h, --help			This help
 -v, --version			Show version info
