@@ -8,8 +8,7 @@ comment
 
 all:	a
 	# This one is done after all dependencies \
-	this are comments boys\
-	this are still comments boys
+	and stuff are done
 	@echo Compiling for $(OS)...
 a:		a.o
 	$(CC) a.o b.o c.o -o a

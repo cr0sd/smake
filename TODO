@@ -1,6 +1,6 @@
 Things we need to do:
 
-1. Add more conditionals
-2. Add target-file checking
+1. Add target-file checking
+2. Add more conditionals
 3. Multiple build targets?
 4. GNU special symbols (e.g., $@)?
