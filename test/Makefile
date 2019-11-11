@@ -22,3 +22,4 @@ e.o:
 	# This one has no dependencies
 clean:
 	@$(RM) -f a *.o
+.PHONY: all
