@@ -6,7 +6,7 @@ GNU/Linux.
 
 ```bash
 smake 0.5.3 
-Build Nov  9 2019 14:04:08
+Build Nov 11 2019 10:28:27
 usage: smake [options] [target]
 -h, --help			This help
 -v, --version			Show version info
@@ -15,6 +15,7 @@ usage: smake [options] [target]
 -p				Print internal data
 -P				Alias to '-np'
 -R, --no-builtin-variables	Disable built-in macros
+-B				Unconditionally build all
 -n, --just-print		Print rules (do not execute)
 ```
 

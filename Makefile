@@ -1,6 +1,10 @@
 CXX=g++
 CC=gcc
+
 CXXFLAGS=-Wfatal-errors -Wall -Wextra -Os -Wno-unused-result
+CXXFLAGS += -std=c++17
+LDFLAGS=-lstdc++fs
+
 PROG=smake
 PREFIX=/usr/local/bin/
 
@@ -29,11 +33,10 @@ smake: \
 
 	#$(OS) $(ISSMAKE)
 	# We will now build the thing...
-	$(CXX) $(PROG).cc -o $(PROG) $(CXXFLAGS)
+	$(CXX) $(PROG).cc -o $(PROG) $(CXXFLAGS) $(LDFLAGS)
 clean:
 	@$(RM) smake *.o
-docs: \
-	smake
+docs: smake
 	cat docs/head > $(README)
 	$(THIS) -v | $(APPEND)$(README)
 	$(THIS) -h | $(APPEND)$(README)

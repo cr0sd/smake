@@ -6,9 +6,8 @@
 #hey this is a \
 comment
 
-all:	a
-	# This one is done after all dependencies \
-	and stuff are done
+all: a
+	# This one is done after all dependencies and stuff are done
 	@echo Compiling for $(OS)...
 a:		a.o
 	$(CC) a.o b.o c.o -o a

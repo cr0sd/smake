@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include<string.h>
+#include<filesystem>
+#include<algorithm>
 #include<sstream>
 #include<vector>
 #include<string>
@@ -39,6 +41,7 @@
 						"-p\t\t\t\tPrint internal data\n" \
 						"-P\t\t\t\tAlias to '-np'\n" \
 						"-R, --no-builtin-variables\tDisable built-in macros\n" \
+						"-B\t\t\t\tUnconditionally build all\n" \
 						"-n, --just-print\t\tPrint rules (do not execute)"
 
 std::string cwd()
@@ -99,6 +102,7 @@ int main(int argc,char**argv)
 	bool print_database=false;				// '-p': print all internal data
 	bool exec=true;							// Will build applicable targets
 	bool no_builtin=false;					// Disable built-in macros
+	bool force_build=false;					// Ignore file-checking
 
 	int cur_line=0;							// Line number for errors
 
@@ -162,6 +166,8 @@ int main(int argc,char**argv)
 							no_builtin=true;
 						else if(argv[i][j]=='f')
 							custom_makefile=true;
+						else if(argv[i][j]=='B')
+							force_build=true;
 						else
 							printf(PROG_NAME ": error: unknown option '%c'\n",argv[i][j]),
 							exit(1);
@@ -532,8 +538,43 @@ int main(int argc,char**argv)
 	// If we are executing them or printing them
 	if(exec || print_only)
 	{
+		std::vector<std::string>already;
 		while(dep_order.size()>0)
 		{
+
+			// Ignore empty target names
+			if(dep_order.top().empty())
+			{
+				dep_order.pop();
+				continue;
+			}
+
+			//Check if file exists (unless force_build)
+			if(std::find(already.begin(),already.end(),
+				dep_order.top())!=already.end() &&
+				!force_build)
+			{
+				//already.push_back(dep_order.top());
+					//printf("'%s' already processed\n",
+						//dep_order.top().c_str());
+					//puts("force_build no set, skipping");
+				dep_order.pop();
+				continue;
+			}
+			//else force_build=true; // build upper tree
+
+			already.push_back(dep_order.top());
+			//if(std::filesystem::exists(
+				//dir+SLASH+dep_order.top()) && !force_build)
+			if(std::filesystem::is_regular_file(
+				dir+SLASH+dep_order.top()) && !force_build)
+			{
+				printf("Nothing to be done for '%s'\n",
+					dep_order.top().c_str());
+				dep_order.pop();
+				continue;
+			}
+
 			for(std::string s:rule_map[(dep_order.top())])
 			//for(std::string s:v)
 			{
