@@ -27,6 +27,9 @@ README=readme.md
 
 # This is a makefile so for to as testingly :-D
 
+# And this is a \
+multiline comment!
+
 all: \
 	smake
 smake: \
@@ -46,4 +49,4 @@ install: \
 	cp $(PROG) $(PREFIX)
 uninstall:
 	$(RM) $(PREFIX)$(PROG)
-.PHONY: all docs
+.PHONY: all docs install uninstall clean
