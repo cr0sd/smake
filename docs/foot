@@ -14,7 +14,11 @@
 
 * Use `-p` to print rules and macros defined in makefile (or built-in)
 
+* `ifeq`, `ifdef` conditionals supported
+
 ### Notes
 
 For now only one build target can be specified at a time.
+
+See the main Makefile for an example of what Smake can do.
 

@@ -6,7 +6,7 @@ GNU/Linux.
 
 ```bash
 smake 0.5.3 
-Build Nov 11 2019 11:01:20
+Build Nov 11 2019 11:06:46
 usage: smake [options] [target]
 -h, --help			This help
 -v, --version			Show version info
@@ -33,7 +33,11 @@ usage: smake [options] [target]
 
 * Use `-p` to print rules and macros defined in makefile (or built-in)
 
+* `ifeq`, `ifdef` conditionals supported
+
 ### Notes
 
 For now only one build target can be specified at a time.
+
+See the main Makefile for an example of what Smake can do.
 
