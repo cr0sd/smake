@@ -577,8 +577,17 @@ int main(int argc,char**argv)
 			{
 				//puts("phony target, should not check files");
 			}
+			
+			#ifdef WINDOWS
+			else if( (std::filesystem::is_regular_file(
+				dir+SLASH+dep_order.top()) ||
+				std::filesystem::is_regular_file(
+				dir+SLASH+dep_order.top()+".exe") )
+				&& !force_build)
+			#else
 			else if(std::filesystem::is_regular_file(
 				dir+SLASH+dep_order.top()) && !force_build)
+			#endif
 			{
 				printf("Nothing to be done for '%s'\n",
 					dep_order.top().c_str());
