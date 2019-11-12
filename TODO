@@ -1,6 +1,7 @@
 Things we need to do:
 
 1. Allow finding targets by appending '.exe' on Windows
-2. Add more conditionals
-3. Multiple build targets?
-4. GNU special symbols (e.g., $@)?
+2. Add implicit rules?
+3. Add more conditionals
+4. Multiple build targets?
+5. GNU special symbols (e.g., $@)?
