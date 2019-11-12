@@ -327,14 +327,15 @@ int main(int argc,char**argv)
 		/*** Pattern A ***/
 		// Check if line matches target definition
 		// Set target if so
-		reg="([a-zA-Z_/\\-\\.]+)[ \\t]*:[ \\t]*(.*)";
+		reg="([\$\(\)a-zA-Z_/\\-\\.]+)[ \\t]*:[ \\t]*(.*)";
 		// Target format: "(name_of_target): (dependencies)"
 		//                 Group 1           Group 2
 		if(std::regex_match(line,reg))
 		{
 			std::regex_search(line,match,reg);
 
-			cur_tgt=match[1];
+			cur_tgt=replace_macros(match[1],macro_map);
+			//cur_tgt=match[1];
 
 			// act_tgt assumes first valid target in makefile
 			if(act_tgt=="")act_tgt=cur_tgt;
@@ -343,7 +344,8 @@ int main(int argc,char**argv)
 			// Map TARGET => Dependencies
 
 			// Split deps by space
-			std::string tmp=match[2].str(); 
+			std::string tmp=replace_macros(match[2].str(),macro_map);
+			//std::string tmp=match[2].str(); 
 			
 			// First, use tmp to replace whitespace with ' '
 			tmp=std::regex_replace(tmp,(std::regex)"\t"," ");
