@@ -579,13 +579,13 @@ int main(int argc,char**argv)
 			}
 			
 			#ifdef WINDOWS
-			else if( (filesystem::is_regular_file(
+			else if( (std::filesystem::is_regular_file(
 				dir+SLASH+dep_order.top()) ||
-				filesystem::is_regular_file(
+				std::filesystem::is_regular_file(
 				dir+SLASH+dep_order.top()+".exe") )
 				&& !force_build)
 			#else
-			else if(filesystem::is_regular_file(
+			else if(std::filesystem::is_regular_file(
 				dir+SLASH+dep_order.top()) && !force_build)
 			#endif
 			{
