@@ -1,2 +1,3 @@
-language: cpp
-script: make
+sudo:		false
+language:	cpp
+script:		make
