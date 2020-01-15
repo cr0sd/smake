@@ -1,8 +1,1 @@
 language: cpp
-dist: trusty
-compiler:
-- gcc
-os:
-- linux
-- Windows
-script: make
