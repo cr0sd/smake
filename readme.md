@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/github/cr0sd/smake/badge.svg?branch=master)](https://coveralls.io/github/cr0sd/smake?branch=master)
+
 ### smake
 
 Make utility that can list the targets contained in 
