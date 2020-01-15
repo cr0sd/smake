@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/cr0sd/smake/badge.svg?branch=master)](https://coveralls.io/github/cr0sd/smake?branch=master)
+[![Build Status](https://travis-ci.com/cr0sd/smake.svg?branch=master)](https://travis-ci.com/cr0sd/smake)
 
 ### smake
 
