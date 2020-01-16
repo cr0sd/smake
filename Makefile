@@ -1,41 +1,45 @@
 CXX=g++
 CC=gcc
 
+# Files, directories
+OBJS=smake.o
+PROG=smake
+PREFIX=/usr/local/bin/
+README=readme.md
+
+# Compiler + linker flags
 CXXFLAGS=-Wfatal-errors -Wall -Wextra -O2 -Wno-unused-result
 CXXFLAGS += -std=c++17
 LDFLAGS=-lstdc++fs
 
-PROG=smake
-PREFIX=/usr/local/bin/
-
+# OS Specific
 ifeq ($(OS),Windows_NT)
 CXXFLAGS += -D WINDOWS
-THIS=.\smake
+THIS=.\$(PROG)
 else
 CXXFLAGS += -D GNULINUX
-THIS=./smake
+THIS=./$(PROG)
 endif
 
+# Exhibit Smake specific stuff
 ifdef ($(SMAKE))
 ISSMAKE=Smake :-) version: $(SMAKE)
 else
 ISSMAKE=Not Smake :-(
 endif
 
-README=readme.md
-
-all: smake
-smake:
-	$(CXX) $(PROG).cc -o $(PROG) $(CXXFLAGS) $(LDFLAGS)
-clean:
-	@$(RM) smake *.o
-docs: smake
+# Make targets
+all: $(OBJS)
+	$(CXX) $(OBJS) -o $(PROG) $(CXXFLAGS) $(LDFLAGS)
+docs: $(PROG)
 	cat docs/head > $(README)
 	$(THIS) -v >> $(README)
 	$(THIS) -h >> $(README)
 	cat docs/foot >> $(README)
-install: smake
+install: $(PROG)
 	cp $(PROG) $(PREFIX)
 uninstall:
 	$(RM) $(PREFIX)$(PROG)
+clean:
+	@$(RM) $(PROG) $(OBJS)
 .PHONY: all docs install uninstall clean
