@@ -25,6 +25,10 @@
 	#define SLASH "/"
 	#include<unistd.h> // For getcwd
 	#define OS_MACRO "GNU/Linux"
+#elif defined(FREEBSD)
+	#define SLASH "/"
+	#include<unistd.h>
+	#define OS_MACRO "FreeBSD"
 #else
 	#error What OS are you even on even?
 #endif
