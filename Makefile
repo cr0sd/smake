@@ -2,7 +2,6 @@ CXX=g++
 CC=gcc
 
 # Files, directories
-OBJS=smake.o
 PROG=smake
 PREFIX=/usr/local/bin/
 README=readme.md
@@ -17,8 +16,13 @@ ifeq ($(OS),Windows_NT)
 CXXFLAGS += -D WINDOWS
 THIS=.\$(PROG)
 else
+ifeq ($(OS),FreeBSD)
+CXXFLAGS += -D FREEBSD
+THIS=./$(PROG)
+else
 CXXFLAGS += -D GNULINUX
 THIS=./$(PROG)
+endif
 endif
 
 # Exhibit Smake specific stuff
@@ -29,8 +33,10 @@ ISSMAKE=Not Smake :-(
 endif
 
 # Make targets
-all: $(OBJS)
-	$(CXX) $(OBJS) -o $(PROG) $(CXXFLAGS) $(LDFLAGS)
+all: smake.o
+	$(CXX) smake.o -o $(PROG) $(CXXFLAGS) $(LDFLAGS)
+smake.o:
+	$(CXX) -c smake.cc $(CXXFLAGS) $(LDFLAGS)
 docs: $(PROG)
 	cat docs/head > $(README)
 	$(THIS) -v >> $(README)
@@ -41,5 +47,5 @@ install: $(PROG)
 uninstall:
 	$(RM) $(PREFIX)$(PROG)
 clean:
-	@$(RM) $(PROG) $(OBJS)
+	@$(RM) $(PROG) smake.o
 .PHONY: all docs install uninstall clean
