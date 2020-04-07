@@ -216,6 +216,7 @@ int main(int argc,char**argv)
 		macro_map["RM"]="rm -f"; // GNU Make uses the '-f' flag (so we do too)
 		macro_map["OS"]=OS_MACRO;
 		macro_map["SMAKE"]=VERSION; // So we know this is Smake
+		macro_map["MAKE"]="smake"; // So we know this is Smake
 	}
 
 
